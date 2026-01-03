@@ -1,5 +1,31 @@
-# Vue 3 + TypeScript + Vite
+# PolyStack
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Stack:
+### Vue + WASM + ZIG + WebGL + Typescript
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+
+PolyStack is a 3D modeller/sprite stack editor that enables you to make 3D models interactively.
+
+
+# Limitations
+ > Maximum 600 faces
+ > No sprite editor yet
+
+
+# Compilation instructions:
+
+Before you begin, make sure you have `zig 0.15.2` (or a more recent version installed).
+After cloning the repo
+
+ 1. Run `bun install`
+ 2. Navigate to the `zig/` folder
+ 3. Run `zig build`
+ 4. Run `bun run dev`
+
+
+ And that's it!
+
+
+# Contribution details
+
+

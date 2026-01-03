@@ -31,3 +31,6 @@ zig-out/
 .vscode/*
 
 
+# WASM binaries
+*.wasm
+
