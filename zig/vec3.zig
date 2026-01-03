@@ -10,8 +10,8 @@ pub const Vec3 = struct {
         return Vec3{ .x = x, .y = y, .z = z };
     }
 
-    pub fn magnitude(v: Vec3) f32 {
-        return math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+    pub fn magnitude(self: Vec3) f32 {
+        return math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z);
     }
 
     pub fn dot(self: Vec3, other: Vec3) f32 {
