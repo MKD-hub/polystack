@@ -40,11 +40,12 @@ export const ArrayWriter = (
 /**
  * Reads from Wasm Memory
  *
- * @params ptr The pointer that is an offset to Wasm Memory that we want to read from
- * @params sizeToRead The size to read from Wasm Memory
- * @params elementType The element type e.g Int32Array Float32Array
- * @params exports The Wasm exports object
+ * @param ptr The pointer that is an offset to Wasm Memory that we want to read from
+ * @param sizeToRead The size to read from Wasm Memory
+ * @param elementType The element type e.g Int32Array Float32Array
+ * @param exports The Wasm exports object
  *
+ * @returns a shallow copy of the elementType buffer
  **/
 
 export const Reader = <T extends SliceableTypedArray>(
