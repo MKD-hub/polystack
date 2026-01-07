@@ -8,7 +8,7 @@ pub const Vec4 = struct {
     w: f32 = 0.0,
 
     pub fn init(x: f32, y: f32, z: f32, w: f32) Vec4 {
-        return Vec4{ .x = x, .y = y, .z = z, .w = w };
+        return .{ .x = x, .y = y, .z = z, .w = w };
     }
 
     pub fn magnitude(self: Vec4) f32 {
@@ -20,15 +20,15 @@ pub const Vec4 = struct {
     }
 
     pub fn subtract(self: Vec4, other: Vec4) Vec4 {
-        return Vec4{ .x = self.x - other.x, .y = self.y - other.y, .z = self.z - other.z, .w = self.w - other.w };
+        return .{ .x = self.x - other.x, .y = self.y - other.y, .z = self.z - other.z, .w = self.w - other.w };
     }
 
     pub fn add(self: Vec4, other: Vec4) Vec4 {
-        return Vec4{ .x = self.x + other.x, .y = self.y + other.y, .z = self.z + other.z, .w = self.w + other.w };
+        return .{ .x = self.x + other.x, .y = self.y + other.y, .z = self.z + other.z, .w = self.w + other.w };
     }
 
     pub fn scale(self: Vec4, s: f32) Vec4 {
-        return Vec4{
+        return .{
             .x = self.x * s,
             .y = self.y * s,
             .z = self.z * s,

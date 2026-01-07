@@ -1,36 +1,37 @@
+///! This module provides a basic mat4 implementation
 const Vec4 = @import("vec4.zig").Vec4;
 
 pub const Mat4 = struct {
-    colx: Vec4,
-    coly: Vec4,
-    colz: Vec4,
+    col0: Vec4,
+    col1: Vec4,
+    col2: Vec4,
     col3: Vec4,
 
     pub fn init() Mat4 {
         return .{
-            .col0 = Vec4.init{ 0, 0, 0, 0 },
-            .col1 = Vec4.init{ 0, 0, 0, 0 },
-            .col2 = Vec4.init{ 0, 0, 0, 0 },
-            .col3 = Vec4.init{ 0, 0, 0, 0 },
+            .col0 = Vec4.init(0, 0, 0, 0),
+            .col1 = Vec4.init(0, 0, 0, 0),
+            .col2 = Vec4.init(0, 0, 0, 0),
+            .col3 = Vec4.init(0, 0, 0, 0),
         };
     }
 
     pub fn identity() Mat4 {
         return .{
-            .col0 = Vec4.init{ 1, 0, 0, 0 },
-            .col1 = Vec4.init{ 0, 1, 0, 0 },
-            .col2 = Vec4.init{ 0, 0, 1, 0 },
-            .col3 = Vec4.init{ 0, 0, 0, 1 },
+            .col0 = Vec4.init(1, 0, 0, 0),
+            .col1 = Vec4.init(0, 1, 0, 0),
+            .col2 = Vec4.init(0, 0, 1, 0),
+            .col3 = Vec4.init(0, 0, 0, 1),
         };
     }
 
     pub fn multiplyWithVec4(self: Mat4, vec: Vec4) Vec4 {
-        return .{
-            self.col0.scale(vec.x)
+        const outVec4 = self.col0.scale(vec.x)
             .add(self.col1.scale(vec.y))
             .add(self.col2.scale(vec.z))
-            .add(self.col3.scale(vec.w))
-        };
+            .add(self.col3.scale(vec.w));
+
+        return outVec4;
     }
 
     pub fn multiplyMat4(self: Mat4, other: Mat4) Mat4 {
