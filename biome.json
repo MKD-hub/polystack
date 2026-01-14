@@ -24,6 +24,9 @@
   },
   "linter": {
     "enabled": true,
+    "domains": {
+      "vue": "recommended"
+    },
     "rules": {
       "recommended": true,
       "suspicious": {
@@ -50,6 +53,14 @@
   "json": {
     "formatter": {
       "trailingCommas": "none"
+    }
+  },
+  "html": {
+    "experimentalFullSupportEnabled": true,
+    "formatter": {
+      "indentScriptAndStyle": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
     }
   }
 }
