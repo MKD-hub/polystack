@@ -32,4 +32,4 @@ zig-out/
 
 
 # WASM binaries
-public/*.wasm
+/public/*.wasm
