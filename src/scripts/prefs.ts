@@ -1,11 +1,15 @@
-interface Prefs {
+export interface Prefs {
   canvasWidth: number;
   canvasHeight: number;
+  cellSize: number;
+  lineThickness: number;
 }
 
 const defaultPrefs: Prefs = {
   canvasWidth: screen.width,
   canvasHeight: screen.height,
+  cellSize: 1.0,
+  lineThickness: 1.0,
 };
 
 export function loadPrefs(): Prefs {

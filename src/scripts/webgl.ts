@@ -11,6 +11,9 @@ export function clear(gl: WebGLRenderingContext) {
 
 export function initCanvas(canvas: HTMLCanvasElement | null) {
   const gl = canvas?.getContext("webgl");
+  if (!gl) {
+    throw new Error("WebGL 1 not supported!");
+  }
   return gl;
 }
 
