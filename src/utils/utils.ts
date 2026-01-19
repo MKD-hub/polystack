@@ -15,7 +15,7 @@ import type { WasmExports } from "@/types/wasm";
 
 export const ArrayWriter = (
   array: Int32Array | Float32Array,
-  exports: WasmExports
+  exports: WasmExports,
 ): number => {
   const sizeInBytes = array.byteLength;
   const ptr = exports.malloc(sizeInBytes) as number; // Call Zig's malloc to get a pointer
@@ -30,7 +30,7 @@ export const ArrayWriter = (
   const sourceData = new Uint8Array(
     array.buffer,
     array.byteOffset,
-    array.byteLength
+    array.byteLength,
   );
   bufferView.set(sourceData);
 
@@ -52,7 +52,7 @@ export const Reader = <T extends SliceableTypedArray>(
   ptr: number,
   sizeToRead: number,
   elementType: SliceableTypedArrayConstructor<T>,
-  exports: WasmExports
+  exports: WasmExports,
 ): T => {
   const memoryBuffer = exports.memory.buffer;
 
