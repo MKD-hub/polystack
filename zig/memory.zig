@@ -3,7 +3,7 @@ const std = @import("std");
 // 1. Create a General Purpose Allocator.
 //    This gives us memory safety in debug builds and speed in release builds.
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const allocator = gpa.allocator();
+pub const allocator = gpa.allocator();
 
 // 2. Export malloc and free for JavaScript to use.
 export fn malloc(size: usize) ?[*]u8 {
