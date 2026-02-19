@@ -4,8 +4,8 @@ const std = @import("std");
 const Mat4 = @import("../math/mat4.zig").Mat4;
 const Vec4 = @import("../math/vec4.zig").Vec4;
 
-/// @params  fovY, aspect, near and far planes
-/// @returns Mat4 representing the persepective matrix
+// @params  fovY, aspect, near and far planes
+// @returns Mat4 representing the persepective matrix
 pub fn perspective(fovY: f32, aspect: f32, near: f32, far: f32) Mat4 {
     return .{
         .col0 = Vec4.init(1 / (aspect * (@tan(fovY / 2))), 0, 0, 0),
