@@ -17,16 +17,8 @@ pub fn perspective(fovY: f32, aspect: f32, near: f32, far: f32) Mat4 {
 }
 
 pub fn calculateMVP(input_v: Vec3, model: Mat4, view: Mat4, projection: Mat4) Vec4 {
-    // multiply these things together.
-    _ = input_v;
-    _ = model;
-    _ = view;
-    _ = projection;
+    const input_v4 = Vec4.init(input_v.x, input_v.y, input_v.z, 1);
+    const mvp = model.multiplyMat4(view.multiplyMat4(projection)).multiplyWithVec4(input_v4);
 
-    return .{
-        .x = 0,
-        .y = 0,
-        .z = 0,
-        .w = 0
-    };
+    return mvp;
 }
