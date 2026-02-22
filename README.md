@@ -1,6 +1,6 @@
 # PolyStack
 
-## Stack:
+*Stack:*
 ### Vue + WASM + ZIG + WebGL + Typescript
 
 
@@ -14,7 +14,7 @@ PolyStack is a 3D modeller/sprite stack editor that enables you to make 3D model
 
 # Compilation instructions:
 
-Before you begin, make sure you have `zig 0.15.2` (or a more recent version installed).
+Before you begin, make sure you have `zig 0.15.2`.
 After cloning the repo
 
  1. Run `bun install`
@@ -27,4 +27,5 @@ After cloning the repo
 
 
 # Contribution details
-    Coming Soon!
+
+ Coming Soon!
