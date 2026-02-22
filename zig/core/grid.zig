@@ -44,9 +44,9 @@ test "generate grid lines" {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const alloc = gpa.allocator();
     
-    try gen_grid.generateGridData(alloc, 10.0, 5.0, 2.0);    
+    try generateGridData(alloc, 10.0, 5.0, 2.0);    
 
-    const grid_ptr = gen_grid.getGridLinePtr();
+    const grid_ptr = getGridLinePtr();
 
     try expect(@intFromPtr(grid_ptr) != 0);
 }
