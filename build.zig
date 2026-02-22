@@ -9,7 +9,9 @@ pub fn build(b: *std.Build) void {
     wasmModule.export_symbol_names = &.{ 
         "malloc",
         "free",
-        "getEditorConfig"
+        "getEditorConfig",
+        "initCamera",
+        "getGridPtr"
     };
 
     const exe = b.addExecutable(.{

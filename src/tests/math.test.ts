@@ -3,7 +3,7 @@ import { loadWasm } from "@/scripts/loader";
 import { wasmStore } from "@/scripts/wasm-store";
 import { ArrayWriter, Reader } from "@/utils/utils";
 
-loadWasm();
+void loadWasm();
 
 /**
  * Passing wasmStore.exports is also passing the allocator. Trying to follow in Zig's footsteps and be explicit about memory.
@@ -75,5 +75,49 @@ test("wasm_multiply_mat4", () => {
     expect(bytesRead).toBeDefined();
 
     console.log(bytesRead);
+  }
+});
+
+/**
+ * @test return_view_matrix
+ */
+test("return_view_matrix", () => {
+  const target = new Float32Array([0.6, 4.0, 1.0]);
+  const result = new Float32Array(16);
+
+  if (wasmStore.exports) {
+    const ptr = ArrayWriter(target, wasmStore.exports);
+    const res = ArrayWriter(result, wasmStore.exports);
+    wasmStore.exports.return_view_matrix(ptr, res);
+    expect(ptr).toBeDefined();
+    expect(res).toBeDefined();
+
+    const bytesRead = Reader(res, 16, Float32Array, wasmStore.exports);
+    expect(bytesRead).toBeDefined();
+
+    console.log(bytesRead);
+  }
+});
+
+/**
+ * @test return_perspective
+ */
+test("return_perspective", () => {
+  const result = new Float32Array(16);
+
+  const fov = 55;
+  const aspect = 16.0 / 9.0;
+  const near = 10;
+  const far = 50;
+
+  if (wasmStore.exports) {
+    const res = ArrayWriter(result, wasmStore.exports);
+    wasmStore.exports.return_perspective(fov, aspect, near, far, res);
+    expect(res).toBeDefined();
+
+    const bytesRead = Reader(res, 16, Float32Array, wasmStore.exports);
+    expect(bytesRead).toBeDefined();
+
+    console.log("perspective ", bytesRead);
   }
 });

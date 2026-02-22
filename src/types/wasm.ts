@@ -8,4 +8,21 @@ export interface WasmExports {
   malloc(size: number): number;
   free(ptr: number, size: number): void;
   multiplier(num: number): number;
+  return_view_matrix(target: number, res: number): void;
+  return_perspective(
+    fov: number,
+    aspect: number,
+    near: number,
+    far: number,
+    res: number
+  ): void;
+
+  getEditorConfig(
+    fov: number,
+    aspect: number,
+    canvas_width: number,
+    canvas_height: number
+  ): void;
+
+  getGridPtr(): number;
 }

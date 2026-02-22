@@ -2,14 +2,18 @@ export interface Prefs {
   canvasWidth: number;
   canvasHeight: number;
   cellSize: number;
-  lineThickness: number;
+  aspect: number;
+  gridLineThickness: number;
+  fov: number;
 }
 
 const defaultPrefs: Prefs = {
-  canvasWidth: screen.width,
-  canvasHeight: screen.height,
+  canvasWidth: document.documentElement.clientWidth,
+  canvasHeight: document.documentElement.clientHeight,
   cellSize: 1.0,
-  lineThickness: 1.0,
+  aspect: 16 / 9,
+  gridLineThickness: 1.0,
+  fov: 55,
 };
 
 export function loadPrefs(): Prefs {

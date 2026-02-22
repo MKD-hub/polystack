@@ -6,6 +6,7 @@ const Vec3 = @import("./math/vec3.zig").Vec3;
 const Camera = @import("./core/camera.zig").Camera;
 const utils = @import("./utils/utils.zig");
 const core = @import("./core/mvp-pipeline.zig");
+const grid = @import("./core/grid.zig");
 const EditorConfig = @import("./constants.zig").EditorConfig;
 
 var gpa = heap.GeneralPurposeAllocator(.{}){};
@@ -63,5 +64,9 @@ export fn initCamera() void {
     g_camera = Camera.init();   
 }
 
-export fn get_grid_ptr() void {
+export fn getGridPtr() usize {
+    grid.generateGridData(allocator, 100, 5, 1.77) catch {
+        logString("Grid Creation Failed");
+    };
+    return @intFromPtr(grid.getGridArrayPtr());
 }

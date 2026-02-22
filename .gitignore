@@ -33,3 +33,9 @@ zig-out/
 
 # WASM binaries
 /public/*.wasm
+
+# playwright generated
+test-results/
+
+# Gemini CLI
+GEMINI.md

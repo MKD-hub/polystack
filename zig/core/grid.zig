@@ -32,7 +32,7 @@ pub fn generateGridData(allocator: std.mem.Allocator, size: f32, spacing: f32, a
     g_grid_lines = try list.toOwnedSlice();
 }
 
-pub fn getGridLinePtr() [*]const Line {
+pub fn getGridArrayPtr() [*]const Line {
     return g_grid_lines.ptr;
 }
 
@@ -46,7 +46,7 @@ test "generate grid lines" {
     
     try generateGridData(alloc, 10.0, 5.0, 2.0);    
 
-    const grid_ptr = getGridLinePtr();
+    const grid_ptr = getGridArrayPtr();
 
     try expect(@intFromPtr(grid_ptr) != 0);
 }

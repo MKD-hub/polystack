@@ -5,14 +5,13 @@ export const setupUniforms = (
   program: WebGLProgram,
   prefs: Prefs
 ) => {
-  console.log("[PREFS]", gl);
   const uResolutionLoc = gl.getUniformLocation(program, "u_resolution");
   const uCellSizeLoc = gl.getUniformLocation(program, "u_cellSize");
   const uLineThicknessLoc = gl.getUniformLocation(program, "u_lineThickness");
 
   gl.uniform2f(uResolutionLoc, prefs.canvasWidth, prefs.canvasHeight);
   gl.uniform1f(uCellSizeLoc, prefs.cellSize);
-  gl.uniform1f(uLineThicknessLoc, prefs.lineThickness);
+  gl.uniform1f(uLineThicknessLoc, prefs.gridLineThickness);
 
   if (!uResolutionLoc || !uCellSizeLoc || !uLineThicknessLoc) {
     console.warn(

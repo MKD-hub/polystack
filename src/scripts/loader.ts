@@ -16,7 +16,7 @@ const importObject = {
           end++;
         }
         const text = new TextDecoder().decode(bytes.slice(ptr, end));
-        console.log("LOG FROM ZIG:", text);
+        console.log("LOG FROM ZIG: ", text);
       }
     },
   },
@@ -26,7 +26,7 @@ export async function loadWasm() {
   // const response = await fetch("/wasmtest.wasm");
   // const buffer = await response.arrayBuffer();
   const { instance } = await WebAssembly.instantiateStreaming(
-    fetch("/wasmtest.wasm"),
+    fetch("/polystack.wasm"),
     importObject
   );
 
