@@ -1,4 +1,5 @@
 const Vec3 = @import("../math/vec3.zig").Vec3;
+const Mat4 = @import("../math/mat4.zig").Mat4;
 const constants = @import("../constants.zig");
 
 // zig fmt: off
@@ -50,7 +51,7 @@ pub const Camera = struct {
         };
     }
 
-    pub fn computeOrientation(self: *const Camera, target: Vec3) CameraDerived {
+    pub fn lookAt(self: *const Camera, target: Vec3) CameraDerived {
         // LookAt function
         const cameraZ: Vec3 = target.subtract(self.state.position).normalize();
         const cameraX: Vec3 = cameraZ.cross(constants.world_up).normalize();
@@ -68,9 +69,11 @@ pub const Camera = struct {
         self.state.orientation = orientation;
     }
 
-    pub fn updateDerived(self: *Camera, target: Vec3) void {
-        const newOrientation = computeOrientation(self, target);
+    pub fn updateCameraAndReturnViewMatrix(self: *Camera, target: Vec3) Mat4 {
+        const newOrientation = lookAt(self, target);
 
         self.derived = newOrientation;
+
+        return Mat4.viewMatrix(self.derived, self.state.position);
     }
 };
