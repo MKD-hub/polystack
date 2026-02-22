@@ -1,5 +1,7 @@
 ///! This module provides a basic mat4 implementation
 const Vec4 = @import("vec4.zig").Vec4;
+const Vec3 = @import("vec3.zig").Vec3;
+const constants = @import("../constants.zig");
 
 pub const Mat4 = struct {
     col0: Vec4,
@@ -41,5 +43,19 @@ pub const Mat4 = struct {
             .col2 = self.multiplyWithVec4(other.col2),
             .col3 = self.multiplyWithVec4(other.col3),
         };
+    }
+
+    pub fn viewMatrix(cam: struct{ x: Vec3, y: Vec3, z: Vec3 }, camPos: Vec3) Mat4 {
+        var viewMat: Mat4 = Mat4.init();
+
+        viewMat.col0 = Vec4.init(cam.x.x, cam.y.x, cam.z.x, 0);
+
+        viewMat.col1 = Vec4.init(cam.x.y, cam.y.y, cam.z.y, 0);
+
+        viewMat.col2 = Vec4.init(cam.x.z, cam.y.z, cam.z.z, 0);
+
+        viewMat.col3 = Vec4.init(-cam.x.dot(camPos), -cam.y.dot(camPos), -cam.z.dot(camPos), 1);
+
+        return viewMat;
     }
 };
