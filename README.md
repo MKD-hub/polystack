@@ -8,7 +8,10 @@ PolyStack is a 3D modeller/sprite stack editor that enables you to make 3D model
 
 
 # Limitations
+ > No modeller yet
+
  > Maximum 600 faces
+
  > No sprite editor yet
 
 
