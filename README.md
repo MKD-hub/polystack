@@ -27,5 +27,4 @@ After cloning the repo
 
 
 # Contribution details
-
-
+    Coming Soon!
