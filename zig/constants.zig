@@ -6,6 +6,8 @@ pub const world_origin = Vec3.init(0, 0, 0);
 pub const EditorConfig = struct {
     fov: f32,
     aspect: f32,
+    near: f32,
+    far: f32,
     canvas_width: f32,
-    canvas_height: f32
+    canvas_height: f32,
 };

@@ -7,20 +7,20 @@ const CameraState = struct {
     position: Vec3, 
 
     const default: CameraState = .{
-        .position = constants.world_origin
+        .position = Vec3.init(0, -2, 10),
     };
 };
 
 // zig fmt: off
 const CameraDerived = struct { 
-    x: Vec3, 
-    y: Vec3, 
-    z: Vec3, 
+    right: Vec3, 
+    up: Vec3, 
+    forward: Vec3, 
 
     const default: CameraDerived = .{
-        .x = Vec3.init(0, 0, 0),
-        .y = Vec3.init(0, 0, 0),
-        .z = Vec3.init(0, 0, 0)
+        .right = Vec3.init(0, 0, 0),
+        .up = Vec3.init(0, 0, 0),
+        .forward = Vec3.init(0, 0, 0)
     };
 };
 
@@ -47,33 +47,36 @@ pub const Camera = struct {
         return .{
             .state = CameraState.default,
             .derived = CameraDerived.default,
-            .lens = CameraLens.default
+            .lens = CameraLens.default // TODO: Make this user defined, these defaults are temporary
         };
     }
 
     pub fn lookAt(self: *const Camera, target: Vec3) CameraDerived {
         // LookAt function
-        const cameraZ: Vec3 = target.subtract(self.state.position).normalize();
-        const cameraX: Vec3 = cameraZ.cross(constants.world_up).normalize();
-        const cameraY: Vec3 = cameraX.cross(cameraZ).normalize();
+        const cameraZ: Vec3 = target.subtract(self.state.position).normalize() catch |err| {
+            @panic(err);
+        };
+        const cameraX: Vec3 = cameraZ.cross(constants.world_up).normalize() catch |err| {
+            @panic(err);
+        };
+        const cameraY: Vec3 = cameraX.cross(cameraZ).normalize() catch |err| {
+            @panic(err);
+        };
 
         return .{
-            .x = cameraX,
-            .y = cameraY,
-            .z = cameraZ
+            .right = cameraX,
+            .up = cameraY,
+            .forward = cameraZ
         };
     }
 
-    pub fn updateState(self: *Camera, position: Vec3, orientation: CameraDerived) void {
+    pub fn moveCamera(self: *Camera, position: Vec3) void {
         self.state.position = position;
-        self.state.orientation = orientation;
     }
 
-    pub fn updateCameraAndReturnViewMatrix(self: *Camera, target: Vec3) Mat4 {
+    pub fn updateCamera(self: *Camera, target: Vec3) void {
         const newOrientation = lookAt(self, target);
 
         self.derived = newOrientation;
-
-        return Mat4.viewMatrix(self.derived, self.state.position);
     }
 };

@@ -25,4 +25,7 @@ export interface WasmExports {
   ): void;
 
   getGridPtr(): number;
+  updateCamera(): void;
+  returnViewMatrix(): Float32Array;
+  returnPerspectiveMatrix(): Float32Array;
 }

@@ -11,7 +11,10 @@ pub fn build(b: *std.Build) void {
         "free",
         "getEditorConfig",
         "initCamera",
-        "getGridPtr"
+        "getGridPtr",
+        "updateCamera",
+        "returnViewMatrix",
+        "returnPerspectiveMatrix",
     };
 
     const exe = b.addExecutable(.{

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { onMounted, ref } from "vue";
+  import { onMounted, onUnmounted, ref } from "vue";
   import { initCanvas, clear } from "@/scripts/webgl";
   import { loadPrefs } from "@/scripts/prefs";
   import { initShaderProgram, setupUniforms } from "@/gl";
@@ -7,13 +7,18 @@
   import Footer from "@/layouts/Footer.vue";
   import { wasmStore } from "@/scripts/wasm-store";
   import { loadWasm } from "@/scripts/loader";
+  import { Reader } from "@/utils/utils";
+  import { drawGrid } from "@/core/draw-grid";
 
-  import vsSource from "@/gl/example.vertex.glsl?raw";
-  import fsSource from "@/gl/example.frag.glsl?raw";
+  import vsSource from "@/gl/grid.vertex.glsl?raw";
+  import fsSource from "@/gl/grid.frag.glsl?raw";
   const size = 100.0;
   const aspect = 1.77;
   const spacing = 5.0;
   const vertical_limit = Math.floor(size / 1.77);
+
+  let g_view_mat: number;
+  let g_perspective_mat: number;
 
   const total =
     Math.floor((2 * size) / spacing) +
@@ -21,39 +26,79 @@
     2;
 
   const canvas = ref<HTMLCanvasElement | null>(null);
+  let animationId: number;
 
   // @ts-expect-error: prefs is used in the template code below
   const prefs = loadPrefs();
 
   onMounted(async () => {
     void (await loadWasm());
+
+    console.log("[prefs]", prefs);
     // Load editor config
     void wasmStore.exports.getEditorConfig(
       prefs.fov,
       prefs.aspect,
+      prefs.near,
+      prefs.far,
       prefs.canvasWidth,
       prefs.canvasHeight
     );
 
     const grid_ptr = wasmStore.exports.getGridPtr();
 
-    const gridLinesView = new Float32Array(
-      wasmStore.memory.buffer,
+    const grid_lines_view = Reader(
       grid_ptr,
-      128 * 3 // Total number of floats to read
+      total * 6,
+      Float32Array,
+      wasmStore.exports
     );
-    console.log(gridLinesView);
+
+    void wasmStore.exports.initCamera();
 
     const gl = initCanvas(canvas.value);
-
-    clear(gl);
-
     const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
     gl.useProgram(shaderProgram);
+    const grid_buffer = gl.createBuffer();
 
     const programUniformLoc = setupUniforms(gl, shaderProgram, prefs);
 
-    console.log(programUniformLoc);
+    const render = () => {
+      clear(gl);
+
+      const render = () => {
+        void wasmStore.exports.updateCamera();
+        g_view_mat = wasmStore.exports.returnViewMatrix();
+        g_perspective_mat = wasmStore.exports.returnPerspectiveMatrix();
+
+        const viewMat = Reader(g_view_mat, 16, Float32Array, wasmStore.exports);
+        const projMat = Reader(
+          g_perspective_mat,
+          16,
+          Float32Array,
+          wasmStore.exports
+        );
+
+        drawGrid(
+          gl,
+          shaderProgram,
+          grid_lines_view,
+          grid_buffer,
+          total * 2,
+          viewMat,
+          projMat
+        );
+      };
+
+      animationId = requestAnimationFrame(render);
+    };
+
+    render();
+  });
+
+  onUnmounted(async () => {
+    // clean-up
+    cancelAnimationFrame(animationId);
   });
 </script>
 

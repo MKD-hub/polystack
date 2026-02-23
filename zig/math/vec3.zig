@@ -14,8 +14,11 @@ pub const Vec3 = struct {
         return math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z);
     }
 
-    pub fn normalize(self: Vec3) Vec3 {
+    pub fn normalize(self: Vec3) !Vec3 {
         const mag = self.magnitude();
+        if (mag == 0) {
+            @panic("Divide By Zero!");
+        }
         return .{ .x = self.x/mag, .y = self.y/mag, .z = self.z/mag };
     }
 

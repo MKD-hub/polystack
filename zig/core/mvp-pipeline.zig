@@ -1,5 +1,4 @@
 // This module defines where to store information.
-
 const std = @import("std");
 const Mat4 = @import("../math/mat4.zig").Mat4;
 const Vec4 = @import("../math/vec4.zig").Vec4;

@@ -5,6 +5,8 @@ export interface Prefs {
   aspect: number;
   gridLineThickness: number;
   fov: number;
+  near: number;
+  far: number;
 }
 
 const defaultPrefs: Prefs = {
@@ -14,6 +16,8 @@ const defaultPrefs: Prefs = {
   aspect: 16 / 9,
   gridLineThickness: 1.0,
   fov: 55,
+  near: 1.0,
+  far: 1000.0,
 };
 
 export function loadPrefs(): Prefs {

@@ -8,6 +8,7 @@ export const setupUniforms = (
   const uResolutionLoc = gl.getUniformLocation(program, "u_resolution");
   const uCellSizeLoc = gl.getUniformLocation(program, "u_cellSize");
   const uLineThicknessLoc = gl.getUniformLocation(program, "u_lineThickness");
+  // TODO: refactor into a factory that produces uniforms
 
   gl.uniform2f(uResolutionLoc, prefs.canvasWidth, prefs.canvasHeight);
   gl.uniform1f(uCellSizeLoc, prefs.cellSize);

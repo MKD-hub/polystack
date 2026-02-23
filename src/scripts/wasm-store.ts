@@ -1,4 +1,4 @@
-import type { WasmExports } from "@/types/wasm"; // We'll create this type definition file next
+import type { WasmExports } from "@/types/wasm";
 
 // This is our singleton store.
 // It holds the memory and the exported functions from the WASM module.
