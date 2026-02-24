@@ -6,7 +6,7 @@ uniform float u_lineThickness; // Keep this declared to test it's not optimized 
 
 void main() {
 	vec2 st = gl_FragCoord.xy / u_resolution;
-	float intensity = (u_cellSize + u_lineThickness) * 0.0; // Minimal influence for now
+	float intensity = (u_cellSize + u_lineThickness) * 0.15; // Minimal influence for now
 
 	// gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Pure Red, fully opaque
 	// Or, to see the effect of st:
