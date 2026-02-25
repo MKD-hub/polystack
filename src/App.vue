@@ -9,6 +9,7 @@
   import { loadWasm } from "@/scripts/loader";
   import { Reader } from "@/utils/utils";
   import { drawGrid } from "@/core/draw-grid";
+  import MouseController from "@/controllers/mouse.controller.ts";
 
   import vsSource from "@/gl/grid.vertex.glsl?raw";
   import fsSource from "@/gl/grid.frag.glsl?raw";
@@ -34,13 +35,15 @@
   onMounted(async () => {
     void (await loadWasm());
 
-    console.log("[prefs]", prefs);
+    const mc = new MouseController(canvas.value!);
+
     // Load editor config
     void wasmStore.exports.getEditorConfig(
       prefs.fov,
       prefs.aspect,
       prefs.near,
       prefs.far,
+      prefs.sensitivity,
       prefs.canvasWidth,
       prefs.canvasHeight
     );
@@ -64,32 +67,28 @@
     const programUniformLoc = setupUniforms(gl, shaderProgram, prefs);
 
     const render = () => {
-      clear(gl);
+      void clear(gl);
+      void wasmStore.exports.updateCamera();
+      g_view_mat = wasmStore.exports.returnViewMatrix();
+      g_perspective_mat = wasmStore.exports.returnPerspectiveMatrix();
 
-      const render = () => {
-        void wasmStore.exports.updateCamera();
-        g_view_mat = wasmStore.exports.returnViewMatrix();
-        g_perspective_mat = wasmStore.exports.returnPerspectiveMatrix();
+      const viewMat = Reader(g_view_mat, 16, Float32Array, wasmStore.exports);
+      const projMat = Reader(
+        g_perspective_mat,
+        16,
+        Float32Array,
+        wasmStore.exports
+      );
 
-        const viewMat = Reader(g_view_mat, 16, Float32Array, wasmStore.exports);
-        const projMat = Reader(
-          g_perspective_mat,
-          16,
-          Float32Array,
-          wasmStore.exports
-        );
-
-        drawGrid(
-          gl,
-          shaderProgram,
-          grid_lines_view,
-          grid_buffer,
-          total * 2,
-          viewMat,
-          projMat
-        );
-      };
-
+      drawGrid(
+        gl,
+        shaderProgram,
+        grid_lines_view,
+        grid_buffer,
+        total * 2,
+        viewMat,
+        projMat
+      );
       animationId = requestAnimationFrame(render);
     };
 
