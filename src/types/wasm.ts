@@ -6,6 +6,9 @@ export interface WasmExports {
   getEditorConfig(
     fov: number,
     aspect: number,
+    near: number,
+    far: number,
+    sensitivity: number,
     canvas_width: number,
     canvas_height: number
   ): void;
