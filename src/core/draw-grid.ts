@@ -7,19 +7,6 @@ export const drawGrid = (
   view_matrix: Float32Array,
   projection_matrix: Float32Array
 ) => {
-  console.log(
-    "[params]",
-    "GB:",
-    grid_buffer,
-    "GVC:",
-    grid_vert_count,
-    "VM:",
-    view_matrix,
-    "PM:",
-    projection_matrix,
-    "GL:",
-    grid_lines
-  );
   gl.useProgram(program);
   gl.bindBuffer(gl.ARRAY_BUFFER, grid_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, grid_lines, gl.STATIC_DRAW);
