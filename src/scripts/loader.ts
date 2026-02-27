@@ -2,12 +2,6 @@ import { wasmStore, setWasmStore } from "@/scripts/wasm-store";
 
 const importObject = {
   env: {
-    printMat4: (ptr: number) => {
-      if (wasmStore.memory) {
-        const matrixData = new Float32Array(wasmStore.memory.buffer, ptr, 16);
-        console.log("Matrix Data:", matrixData);
-      }
-    },
     logString: (ptr: number) => {
       if (wasmStore.memory) {
         const bytes = new Uint8Array(wasmStore.memory.buffer);
