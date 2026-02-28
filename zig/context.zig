@@ -9,12 +9,10 @@ const core = @import("./core/mvp-pipeline.zig");
 const grid = @import("./core/grid.zig");
 const constants = @import("./constants.zig");
 const EditorConfig = @import("./constants.zig").EditorConfig;
-const Logger = @import("./utils/logger.zig").Logger;
 
 pub const CoreContext = struct {
     allocator: std.mem.Allocator,
     config: EditorConfig,
-    logger: Logger,
     camera: Camera,
     view_mat: [16]f32,
     perspective_mat: [16]f32,
@@ -23,7 +21,6 @@ pub const CoreContext = struct {
         return .{
             .allocator = alloc,
             .config = undefined,
-            .logger = undefined,
             .camera = Camera.init(),
             .view_mat = undefined,
             .perspective_mat = undefined,
