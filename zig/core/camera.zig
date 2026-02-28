@@ -109,7 +109,7 @@ pub const Camera = struct {
 
     /// Zooming scales the radius, bringing the position closer to the target
     pub fn zoom(self: *Camera, delta: f32) void {
-        self.rotation.radius += delta * 25;
+        self.rotation.radius += delta * 1000;
         
         // Prevent radius from becoming negative or zero
         if (self.rotation.radius < 0.1) self.rotation.radius = 0.1;
