@@ -4,6 +4,7 @@ export interface Prefs {
   cellSize: number;
   aspect: number;
   gridLineThickness: number;
+  sensitivity: number;
   fov: number;
   near: number;
   far: number;
@@ -15,6 +16,7 @@ const defaultPrefs: Prefs = {
   cellSize: 1.0,
   aspect: 16 / 9,
   gridLineThickness: 1.0,
+  sensitivity: 0.001,
   fov: 55,
   near: 1.0,
   far: 1000.0,

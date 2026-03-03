@@ -8,6 +8,7 @@ pub const EditorConfig = struct {
     aspect: f32,
     near: f32,
     far: f32,
+    sensitivity: f32,
     canvas_width: f32,
     canvas_height: f32,
 };
