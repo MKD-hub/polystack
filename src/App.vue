@@ -13,8 +13,8 @@
 
   import vsSource from "@/gl/grid.vertex.glsl?raw";
   import fsSource from "@/gl/grid.frag.glsl?raw";
-  const size = 100.0;
-  const aspect = 1.77;
+  const size = 250;
+  const aspect = 1.0;
   const spacing = 5.0;
   const vertical_limit = Math.floor(size / 1.77);
 
@@ -34,7 +34,6 @@
 
   onMounted(async () => {
     void (await loadWasm());
-
     const mc = new MouseController(canvas.value!);
 
     // Load editor config
@@ -48,7 +47,7 @@
       prefs.canvasHeight
     );
 
-    const grid_ptr = wasmStore.exports.getGridPtr();
+    const grid_ptr = wasmStore.exports.getGridPtr(size, spacing);
 
     const grid_lines_view = Reader(
       grid_ptr,
@@ -56,8 +55,6 @@
       Float32Array,
       wasmStore.exports
     );
-
-    void wasmStore.exports.initCamera();
 
     const gl = initCanvas(canvas.value);
     const shaderProgram = initShaderProgram(gl, vsSource, fsSource);

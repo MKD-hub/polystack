@@ -10,7 +10,7 @@ pub fn build(b: *std.Build) void {
         "malloc",
         "free",
         "getEditorConfig",
-        "initCamera",
+        // "initCamera",
         "getGridPtr",
         "updateCamera",
         "returnViewMatrix",
