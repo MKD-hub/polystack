@@ -15,6 +15,7 @@ pub const CoreContext = struct {
     camera: Camera,
     view_mat: [16]f32,
     perspective_mat: [16]f32,
+    grid_model_mat: [16]f32,
 
     pub fn init(alloc: std.mem.Allocator) CoreContext {
         return .{
@@ -23,6 +24,7 @@ pub const CoreContext = struct {
             .camera = Camera.init(),
             .view_mat = undefined,
             .perspective_mat = undefined,
+            .grid_model_mat = undefined
         };
     }
 };

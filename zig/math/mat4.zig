@@ -47,29 +47,27 @@ pub const Mat4 = struct {
 
     pub fn viewMatrix(right: Vec3, up: Vec3, forward: Vec3, camPos: Vec3) Mat4 {
         var viewMat: Mat4 = Mat4.init();
-
         viewMat.col0 = Vec4.init(right.x, up.x, forward.x, 0);
-
         viewMat.col1 = Vec4.init(right.y, up.y, forward.y, 0);
-
         viewMat.col2 = Vec4.init(right.z, up.z, forward.z, 0);
-
         viewMat.col3 = Vec4.init(-right.dot(camPos), -up.dot(camPos), -forward.dot(camPos), 1);
-
         return viewMat;
     }
 
-    /// @param  fovY
-    /// @param aspect
-    /// @param near
-    /// @param far
-    /// @returns Mat4 representing the persepective matrix
+    /// @returns {Mat4} perspective matrix
+    /// @param   {f32}  fovY
+    /// @param   {f32}  aspect
+    /// @param   {f32}  near
+    /// @param   {f32}  far
     pub fn perspective(fovY: f32, aspect: f32, near: f32, far: f32) Mat4 {
+        const f = 1.0 / @tan(fovY / 2.0);
         return .{
-            .col0 = Vec4.init(1 / (aspect * (@tan(fovY / 2))), 0, 0, 0),
-            .col1 = Vec4.init(0, 1 / @tan(fovY / 2), 0, 0),
-            .col2 = Vec4.init(0, 0, (near + far) / (near - far), -1),
-            .col3 = Vec4.init(0, 0, (2 * near * far) / (near - far), 0),
+            .col0 = Vec4.init(f / aspect, 0, 0, 0),
+            .col1 = Vec4.init(0, f, 0, 0),
+            .col2 = Vec4.init(0, 0, (far + near) / (near - far), -1.0),
+            .col3 = Vec4.init(0, 0, (2.0 * far * near) / (near - far), 0.0),
         };
     }
+    /// @returns model matrix
+    pub fn model() Mat4 {}
 };

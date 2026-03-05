@@ -1,6 +1,7 @@
 const std = @import("std");
 const heap = @import("std").heap;
 const Mat4 = @import("./math/mat4.zig").Mat4;
+const Vec3 = @import("./math/vec3.zig").Vec3;
 const utils = @import("./utils/utils.zig");
 const grid = @import("./core/grid.zig");
 const constants = @import("./constants.zig");
@@ -45,7 +46,7 @@ export fn getEditorConfig(
     canvas_width:  f32,
     canvas_height: f32
 ) void {
-    g_context.config.fov           = fov;
+    g_context.config.fov           = fov * (std.math.pi / 180.0);
     g_context.config.aspect        = aspect;
     g_context.config.near          = near;
     g_context.config.far           = far;
@@ -55,7 +56,7 @@ export fn getEditorConfig(
 
     // zig fmt: off
     // For printing from Zig to JS
-    editor_config_log.warn("Editor Config: FOV={d:.4}, Aspect={d:.4}, Near={d:.4}, Far={d:.4}, Sensitivity={d:.4}, CanvasW={d:.4}, CanvasH={d:.4}\n", .{
+    editor_config_log.info("Editor Config: FOV={d:.4}, Aspect={d:.4}, Near={d:.4}, Far={d:.4}, Sensitivity={d:.4}, CanvasW={d:.4}, CanvasH={d:.4}\n", .{
         g_context.config.fov,
         g_context.config.aspect,
         g_context.config.near,
@@ -91,6 +92,20 @@ export fn getGridPtr(grid_size: f32, grid_spacing: f32) usize {
     return @intFromPtr(grid.getGridArrayPtr());
 }
 
+export fn getGridVerts() *const constants.v_grid {
+    return &constants.v_grid.default;
+}
+
+export fn getGridTriangles() *const constants.t_grid {
+    return &constants.t_grid.default;
+}
+
+export fn generateAndReturnGridQuad(grid_size: f32) *[16]f32 {
+    const grid_quad = grid.generateGridModelMatrix(grid_size, g_context.camera.state.position);
+    utils.flattenMat4ToF32Array(grid_quad, &g_context.grid_model_mat);
+    return &g_context.grid_model_mat;
+}
+
 export fn updateCamera() void {
     g_context.camera.updateOrientation();
 }
@@ -115,6 +130,10 @@ export fn cameraRotate(theta: i32, phi: i32) void {
     const r_theta = @as(f32, @floatFromInt(theta))   * g_context.config.sensitivity;
     const r_phi   = @as(f32, @floatFromInt(phi))     * g_context.config.sensitivity;
     g_context.camera.updateSpherical(r_theta, r_phi);
+}
+
+export fn getCameraPos() *Vec3 {
+    return &g_context.camera.state.position;
 }
 
 export fn zoom(js_delta_y: f32) void {

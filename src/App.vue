@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  const VEC3_WIDTH = 3; // 3 elements per Vec3
+
   import { onMounted, onUnmounted, ref } from "vue";
   import { initCanvas, clear } from "@/scripts/webgl";
   import { loadPrefs } from "@/scripts/prefs";
@@ -8,29 +10,24 @@
   import { wasmStore } from "@/scripts/wasm-store";
   import { loadWasm } from "@/scripts/loader";
   import { Reader } from "@/utils/utils";
-  import { drawGrid } from "@/core/draw-grid";
+  import { drawGridQuad } from "@/core/draw-grid-quad";
   import MouseController from "@/controllers/mouse.controller.ts";
 
   import vsSource from "@/gl/grid.vertex.glsl?raw";
   import fsSource from "@/gl/grid.frag.glsl?raw";
-  const size = 250;
-  const aspect = 1.0;
-  const spacing = 5.0;
-  const vertical_limit = Math.floor(size / 1.77);
 
   let g_view_mat: number;
   let g_perspective_mat: number;
-
-  const total =
-    Math.floor((2 * size) / spacing) +
-    Math.floor((2 * vertical_limit) / spacing) +
-    2;
 
   const canvas = ref<HTMLCanvasElement | null>(null);
   let animationId: number;
 
   // @ts-expect-error: prefs is used in the template code below
   const prefs = loadPrefs();
+
+  const size = 2000;
+  const aspect = prefs.aspect;
+  const spacing = 5.0;
 
   onMounted(async () => {
     void (await loadWasm());
@@ -47,12 +44,19 @@
       prefs.canvasHeight
     );
 
-    const grid_ptr = wasmStore.exports.getGridPtr(size, spacing);
+    const v_grid = wasmStore.exports.getGridVerts();
+    const t_grid = wasmStore.exports.getGridTriangles();
 
-    const grid_lines_view = Reader(
-      grid_ptr,
-      total * 6,
+    const v_grid_view = Reader(
+      v_grid,
+      VEC3_WIDTH * 4,
       Float32Array,
+      wasmStore.exports
+    );
+    const t_grid_view = Reader(
+      t_grid,
+      VEC3_WIDTH * 2,
+      Uint16Array,
       wasmStore.exports
     );
 
@@ -69,22 +73,40 @@
       g_view_mat = wasmStore.exports.returnViewMatrix();
       g_perspective_mat = wasmStore.exports.returnPerspectiveMatrix();
 
-      const viewMat = Reader(g_view_mat, 16, Float32Array, wasmStore.exports);
-      const projMat = Reader(
+      const grid_quad_ptr = wasmStore.exports.generateAndReturnGridQuad(size);
+      const grid_model_mat = Reader(
+        grid_quad_ptr,
+        16,
+        Float32Array,
+        wasmStore.exports
+      );
+
+      const cam_pos = wasmStore.exports.getCameraPos();
+      const cam_pos_view = Reader(
+        cam_pos,
+        VEC3_WIDTH,
+        Float32Array,
+        wasmStore.exports
+      );
+
+      const view_mat = Reader(g_view_mat, 16, Float32Array, wasmStore.exports);
+      const proj_mat = Reader(
         g_perspective_mat,
         16,
         Float32Array,
         wasmStore.exports
       );
 
-      drawGrid(
+      gl.disable(gl.CULL_FACE);
+      drawGridQuad(
         gl,
         shaderProgram,
-        grid_lines_view,
-        grid_buffer,
-        total * 2,
-        viewMat,
-        projMat
+        cam_pos_view,
+        v_grid_view,
+        t_grid_view,
+        grid_model_mat,
+        view_mat,
+        proj_mat
       );
       animationId = requestAnimationFrame(render);
     };
