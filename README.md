@@ -6,13 +6,15 @@
 
 PolyStack is a 3D modeller/sprite stack editor that enables you to make 3D models interactively.
 
+# currently
+- Minimal UI
+- World Grid
 
-# Limitations
- > No modeller yet
 
- > Maximum 600 faces
-
- > No sprite editor yet
+# Roadmap
+ - full modeller with grid snapping support
+ - sprite editor
+ - stack editing
 
 
 # Compilation instructions:
