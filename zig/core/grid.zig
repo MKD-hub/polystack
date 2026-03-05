@@ -1,6 +1,5 @@
 const std = @import("std");
 const Vec3 = @import("../math/vec3.zig").Vec3;
-const mem = @import("../memory.zig");
 const expect = std.testing.expect;
 
 pub const Line = struct {
