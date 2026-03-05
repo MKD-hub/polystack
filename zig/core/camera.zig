@@ -1,3 +1,4 @@
+/// Camera
 const std = @import("std");
 const Vec3 = @import("../math/vec3.zig").Vec3;
 const Mat4 = @import("../math/mat4.zig").Mat4;
@@ -8,7 +9,7 @@ const CameraState = struct {
     target: Vec3, // The point we orbit (the "Pivot")
 
     const default: CameraState = .{
-        .position = Vec3.init(0, 0, 5),
+        .position = Vec3.init(0, -10.0, 10.0),
         .target = Vec3.init(0, 0, 0),
     };
 };

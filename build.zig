@@ -10,9 +10,12 @@ pub fn build(b: *std.Build) void {
         "malloc",
         "free",
         "getEditorConfig",
-        // "initCamera",
         "getGridPtr",
+        "generateAndReturnGridQuad",
+        "getGridVerts",
+        "getGridTriangles",
         "updateCamera",
+        "getCameraPos",
         "returnViewMatrix",
         "returnPerspectiveMatrix",
         "cameraRotate",
@@ -25,6 +28,15 @@ pub fn build(b: *std.Build) void {
     });
 
     exe.entry = .disabled;
+
+    const install_docs = b.addInstallDirectory(.{
+        .source_dir = exe.getEmittedDocs(),
+        .install_dir = .prefix,
+        .install_subdir = "docs",
+    });
+
+    const docs_step = b.step("docs", "Install docs into zig-out/docs");
+    docs_step.dependOn(&install_docs.step);
 
     b.installArtifact(exe);
     const installStep = b.addInstallFile(exe.getEmittedBin(), "../public/polystack.wasm");

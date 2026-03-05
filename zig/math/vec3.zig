@@ -1,8 +1,5 @@
 const std = @import("std");
 const math = std.math;
-const logger = @import("../utils/logger.zig").Logger;
-
-var v_logger: logger = undefined;
 
 pub const Vec3 = struct {
     x: f32,
@@ -18,10 +15,8 @@ pub const Vec3 = struct {
     }
 
     pub fn normalize(self: Vec3) !Vec3 {
-        v_logger.buf = undefined;
         const mag = self.magnitude();
         if (mag == 0) {
-            v_logger.log("error: Divide by zero, mag: {any}\n", mag);
             @panic("Divide By Zero!");
         }
         return .{ .x = self.x/mag, .y = self.y/mag, .z = self.z/mag };

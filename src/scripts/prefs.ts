@@ -15,11 +15,11 @@ const defaultPrefs: Prefs = {
   canvasHeight: document.documentElement.clientHeight,
   cellSize: 1.0,
   aspect: 16 / 9,
-  gridLineThickness: 1.0,
+  gridLineThickness: 0.04,
   sensitivity: 0.001,
-  fov: 55,
-  near: 1.0,
-  far: 1000.0,
+  fov: 45,
+  near: 0.001,
+  far: 4000.0,
 };
 
 export function loadPrefs(): Prefs {

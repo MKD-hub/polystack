@@ -32,3 +32,7 @@ After cloning the repo
 # Contribution details
 
  Coming Soon!
+
+## Notes
+
+- If the grid ever renders a large dark wedge, it could mean the quad vertices were supplied in a winding/order that WebGL's rasterizer doesn't like. The fix was to reorder the indices from bottom-left to top-right so the triangles share the preferred winding and clipping artifacts went away.

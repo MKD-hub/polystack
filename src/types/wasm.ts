@@ -18,5 +18,9 @@ export interface WasmExports {
   returnViewMatrix(): Float32Array;
   returnPerspectiveMatrix(): Float32Array;
   cameraRotate(theta: number, phi: number): void;
+  getCameraPos(): Float32Array;
   zoom(zoom: number): void;
+  getGridVerts(): Float32Array;
+  getGridTriangles(): Uint16Array;
+  generateAndReturnGridQuad(size: number): Float32Array;
 }
