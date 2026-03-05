@@ -58,4 +58,18 @@ pub const Mat4 = struct {
 
         return viewMat;
     }
+
+    /// @param  fovY
+    /// @param aspect
+    /// @param near
+    /// @param far
+    /// @returns Mat4 representing the persepective matrix
+    pub fn perspective(fovY: f32, aspect: f32, near: f32, far: f32) Mat4 {
+        return .{
+            .col0 = Vec4.init(1 / (aspect * (@tan(fovY / 2))), 0, 0, 0),
+            .col1 = Vec4.init(0, 1 / @tan(fovY / 2), 0, 0),
+            .col2 = Vec4.init(0, 0, (near + far) / (near - far), -1),
+            .col3 = Vec4.init(0, 0, (2 * near * far) / (near - far), 0),
+        };
+    }
 };

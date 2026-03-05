@@ -2,7 +2,6 @@ const std = @import("std");
 const heap = @import("std").heap;
 const Mat4 = @import("./math/mat4.zig").Mat4;
 const utils = @import("./utils/utils.zig");
-const core = @import("./core/mvp-pipeline.zig");
 const grid = @import("./core/grid.zig");
 const constants = @import("./constants.zig");
 const context = @import("./context.zig");
@@ -126,7 +125,7 @@ export fn zoom(js_delta_y: f32) void {
 
 export fn returnPerspectiveMatrix() *[16]f32 {
     // zig fmt: off
-     utils.flattenMat4ToF32Array(core.perspective(
+     utils.flattenMat4ToF32Array(Mat4.perspective(
         g_context.config.fov,
         g_context.config.aspect,
         g_context.config.near,

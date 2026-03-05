@@ -5,7 +5,6 @@ const Vec4 = @import("./math/vec4.zig").Vec4;
 const Vec3 = @import("./math/vec3.zig").Vec3;
 const Camera = @import("./core/camera.zig").Camera;
 const utils = @import("./utils/utils.zig");
-const core = @import("./core/mvp-pipeline.zig");
 const grid = @import("./core/grid.zig");
 const constants = @import("./constants.zig");
 const EditorConfig = @import("./constants.zig").EditorConfig;
