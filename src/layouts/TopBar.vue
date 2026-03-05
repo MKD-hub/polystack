@@ -1,44 +1,56 @@
 <script setup lang="ts">
+  import { Layers2, Image, Shapes, Layers } from "lucide-vue-next";
 </script>
 
 <template>
-  <div class="navbar bg-base-100 shadow-sm">
+  <div class="navbar bg-white shadow-sm">
     <div class="flex-none">
-      <button class="btn btn-square btn-ghost">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          class="inline-block h-5 w-5 stroke-current"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          ></path>
-        </svg>
-      </button>
+      <div class="drawer">
+        <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content">
+          <!-- Page content here -->
+          <label for="my-drawer-1" class="btn drawer-button">
+            <Layers2 class="text-blue-500" />
+          </label>
+        </div>
+        <div class="drawer-side">
+          <label
+            for="my-drawer-1"
+            aria-label="close sidebar"
+            class="drawer-overlay"
+          ></label>
+          <h4 class="tracking-[3px] px-5 py-3 font-bold uppercase">
+            Hierarchy
+          </h4>
+          <ul class="menu bg-base-200 min-h-full w-90 p-4">
+            <!-- Sidebar content here -->
+            <!-- TODO: dynamically populate with scene graph later -->
+            <li><a>Sidebar Item 1</a></li>
+            <li><a>Sidebar Item 2</a></li>
+          </ul>
+          <div class="self-end mb-20">
+            <p
+              class="text-neutral-600 uppercase font-semibold text-sm px-2 py-2"
+            >
+              Asset Browser
+            </p>
+            <div class="flex gap-2 items-center px-2">
+              <button class="btn size-25 btn-square shadow-none">
+                <Layers class="text-primary-content" />
+              </button>
+              <button class="btn size-25 btn-square shadow-none">
+                <Shapes class="text-primary-content" />
+              </button>
+              <button class="btn size-25 btn-square shadow-none">
+                <Image class="text-primary-content" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="flex-1">
-      <a class="btn btn-ghost text-xl">PolyStack</a>
-    </div>
-    <div class="flex-none">
-      <button class="btn btn-square btn-ghost">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          class="inline-block h-5 w-5 stroke-current"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-          ></path>
-        </svg>
-      </button>
+      <a class="btn text-blue-500 border-none btn-ghost text-xl">PolyStack</a>
     </div>
   </div>
 </template>

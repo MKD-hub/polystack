@@ -25,10 +25,6 @@
   // @ts-expect-error: prefs is used in the template code below
   const prefs = loadPrefs();
 
-  const size = 2000;
-  const aspect = prefs.aspect;
-  const spacing = 5.0;
-
   onMounted(async () => {
     void (await loadWasm());
     const mc = new MouseController(canvas.value!);
@@ -65,7 +61,7 @@
     gl.useProgram(shaderProgram);
     const grid_buffer = gl.createBuffer();
 
-    const programUniformLoc = setupUniforms(gl, shaderProgram, prefs);
+    void setupUniforms(gl, shaderProgram, prefs);
 
     const render = () => {
       void clear(gl);
@@ -73,7 +69,9 @@
       g_view_mat = wasmStore.exports.returnViewMatrix();
       g_perspective_mat = wasmStore.exports.returnPerspectiveMatrix();
 
-      const grid_quad_ptr = wasmStore.exports.generateAndReturnGridQuad(size);
+      const grid_quad_ptr = wasmStore.exports.generateAndReturnGridQuad(
+        prefs.gridSize
+      );
       const grid_model_mat = Reader(
         grid_quad_ptr,
         16,
@@ -127,10 +125,11 @@
   <div class="relative">
     <canvas
       ref="canvas"
-      class="absolute border border-dashed border-white inset-0"
+      class="absolute inset-0"
       title="3D Renderer"
       :width="prefs.canvasWidth"
       :height="prefs.canvasHeight"
     />
   </div>
+  <Footer />
 </template>
