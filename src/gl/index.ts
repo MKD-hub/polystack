@@ -4,28 +4,25 @@ export const setupUniforms = (
   gl: WebGLRenderingContext,
   program: WebGLProgram,
   prefs: Prefs
-) => {
-  const uResolutionLoc = gl.getUniformLocation(program, "u_resolution");
-  const uCellSizeLoc = gl.getUniformLocation(program, "u_cellSize");
-  const uLineThicknessLoc = gl.getUniformLocation(program, "u_lineThickness");
-  // TODO: refactor into a factory that produces uniforms
-
-  gl.uniform2f(uResolutionLoc, prefs.canvasWidth, prefs.canvasHeight);
-  gl.uniform1f(uCellSizeLoc, prefs.cellSize);
-  gl.uniform1f(uLineThicknessLoc, prefs.gridLineThickness);
-
-  if (!uResolutionLoc || !uCellSizeLoc || !uLineThicknessLoc) {
-    console.warn(
-      "Some uniforms were not found. Maybe check your fragment/vertex shader to see if the compiler might have optimized them away."
-    );
-  }
-
-  // For debugging
-  return {
-    res: uResolutionLoc,
-    cell: uCellSizeLoc,
-    thick: uLineThicknessLoc,
+): void => {
+  const uniforms = {
+    uLineThicknessLoc: gl.getUniformLocation(program, "u_lineThickness"),
+    uGridSpacingMajorLoc: gl.getUniformLocation(program, "u_gridSpacingMajor"),
+    uGridSpacingMinorLoc: gl.getUniformLocation(program, "u_gridSpacingMinor"),
   };
+
+  gl.uniform1f(uniforms.uLineThicknessLoc, prefs.gridLineThickness);
+  gl.uniform1f(uniforms.uGridSpacingMajorLoc, prefs.gridSpacingMajor);
+  gl.uniform1f(uniforms.uGridSpacingMinorLoc, prefs.gridSpacingMinor);
+
+  // Loop through the uniform locations
+  for (const [key, location] of Object.entries(uniforms)) {
+    if (location === null) {
+      console.warn(
+        `Uniform Location Error: "${key}" was not found in the shader program. Check if it's being used, it may have been optimized away by the GLSL compiler.`
+      );
+    }
+  }
 };
 
 export const loadShader = (
