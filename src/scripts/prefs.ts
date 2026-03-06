@@ -18,7 +18,7 @@ const defaultPrefs: Prefs = {
   aspect: 16 / 9,
   gridSize: 2000,
   gridLineThickness: 0.04,
-  gridSpacingMajor: 6.0,
+  gridSpacingMajor: 4.0,
   gridSpacingMinor: 1.0,
   sensitivity: 0.001,
   fov: 45,

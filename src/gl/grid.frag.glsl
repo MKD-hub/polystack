@@ -1,40 +1,19 @@
-// precision mediump float;
-//
-// uniform vec2 u_resolution;
-// uniform float u_cellSize;
-// uniform float u_lineThickness; // Keep this declared to test it's not optimized away
-// uniform vec3 u_cameraPos;
-//
-// // received from the vertex shader
-// varying vec3 v_worldPos;
-//
-// void main() {
-//     vec2 pos = fract(v_worldPos.xz);
-//
-//     // Basic grid math
-//     float lineX = step(u_lineThickness, pos.x);
-//     float lineZ = step(u_lineThickness, pos.y);
-//     float grid = 1.0 - (lineX * lineZ);
-//
-//     // Fade logic: smoothstep(far_limit, near_limit, distance)
-//     float dist = distance(v_worldPos.xz, u_cameraPos.xz);
-//     float alpha = smoothstep(80.0, 40.0, dist); // Fades completely by 100 units
-//
-//     gl_FragColor = vec4(vec3(0.1), grid * alpha);
-// }
-//
 precision mediump float;
 
 uniform float u_lineThickness; 
+uniform float u_gridSpacingMajor;
+uniform float u_gridSpacingMinor;
 uniform vec3 u_cameraPos;
 
 varying vec3 v_worldPos;
 
-// Helper to draw a grid line at a specific scale
-float drawGrid(vec2 space, float scale, float thickness) {
+// Enhanced grid drawer with distance-aware thickness
+float drawGrid(vec2 space, float scale, float thickness, float dist) {
     vec2 grid = abs(fract(space / scale - 0.5) - 0.5);
-    // Use the camera distance to sharpen/fade lines manually
-    float line = smoothstep(thickness, thickness * 0.5, min(grid.x, grid.y));
+    
+    // Scale thickness by distance to prevent sub-pixel thinning
+    float dynamicThickness = thickness + (dist * 0.001); 
+    float line = smoothstep(dynamicThickness, dynamicThickness * 0.5, min(grid.x, grid.y));
     return line;
 }
 
@@ -42,27 +21,40 @@ void main() {
     vec2 uv = v_worldPos.xz;
     float dist = distance(uv, u_cameraPos.xz);
     
-    // 1. Draw Small Grid (1.0 unit)
-    float subGrid = drawGrid(uv, 1.0, 0.01);
+    // Define Color Palette
+    vec3 majorColor = vec3(0.6);           // White major lines
+    vec3 minorColor = vec3(0.2, 0.3, 0.4); // Subtle blue-ish minor lines
+    vec3 crossColor = vec3(0.6);           // Highlight color for intersections
     
-    // 2. Draw Major Grid (10.0 units)
-    float majorGrid = drawGrid(uv, 10.0, 0.02);
+    // 1. Calculate Grid LOD Factors
+    // Minor lines fade out completely by distance 50
+    float minorLOD = smoothstep(50.0, 10.0, dist);
+    // Major lines fade out completely by distance 500
+    float majorLOD = smoothstep(200.0, 100.0, dist);
     
-    // 3. Draw the Crosses (+) at 10-unit intersections
-    // We check if we are very close to a 10.0 multiple on BOTH axes
-    vec2 crossPos = abs(fract(uv / 10.0 - 0.5) - 0.5) * 10.0;
+    // 2. Compute Patterns
+    float subGrid = drawGrid(uv, u_gridSpacingMinor, 0.01, dist);
+    float majorGrid = drawGrid(uv, u_gridSpacingMajor, u_lineThickness, dist);
+    
+    vec2 crossPos = abs(fract(uv / u_gridSpacingMajor - 0.5) - 0.5) * u_gridSpacingMajor;
     float isCross = step(min(crossPos.x, crossPos.y), 0.1) * step(max(crossPos.x, crossPos.y), 0.5);
 
-    // 4. Combine with different intensities
-    vec3 color = vec3(0.0);
+    // 3. Layering with Transparency
+    vec3 finalColor = vec3(0.0);
     float alpha = 0.0;
-    
-    alpha += subGrid * 0.2;     // Faint small lines
-    alpha += majorGrid * 0.5;   // Stronger major lines
-    alpha += isCross * 0.8;     // Brightest intersection points
-    
-    // 5. Global Distance Fade
-    float fade = smoothstep(500.0, 50.0, dist);
 
-    gl_FragColor = vec4(vec3(0.1), alpha * fade);
+    // Layer: Minor Lines (Only show if close)
+    finalColor = mix(finalColor, minorColor, subGrid * minorLOD);
+    alpha = max(alpha, subGrid * 0.2 * minorLOD);
+
+    // Layer: Major Lines
+    finalColor = mix(finalColor, majorColor, majorGrid * majorLOD);
+    alpha = max(alpha, majorGrid * 0.5 * majorLOD);
+
+    // Layer: Intersections
+    finalColor = mix(finalColor, crossColor, isCross * majorLOD);
+    alpha = max(alpha, isCross * 1.0 * majorLOD);
+
+    // 4. Output
+    gl_FragColor = vec4(finalColor, alpha);
 }
