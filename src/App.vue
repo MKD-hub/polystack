@@ -7,6 +7,7 @@
   import { initShaderProgram, setupUniforms } from "@/gl";
   import TopBar from "@/layouts/TopBar.vue";
   import Footer from "@/layouts/Footer.vue";
+  import Tools from "@/components/tools.vue";
   import { wasmStore } from "@/scripts/wasm-store";
   import { loadWasm } from "@/scripts/loader";
   import { Reader } from "@/utils/utils";
@@ -121,6 +122,7 @@
 <template>
   <TopBar />
 
+  <Tools />
   <!-- Canvas area -->
   <div class="relative">
     <canvas
