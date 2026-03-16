@@ -9,7 +9,7 @@ const CameraState = struct {
     target: Vec3, // The point we orbit (the "Pivot")
 
     const default: CameraState = .{
-        .position = Vec3.init(0, -10.0, 10.0),
+        .position = Vec3.init(0, 0, 0),
         .target = Vec3.init(0, 0, 0),
     };
 };
@@ -110,7 +110,7 @@ pub const Camera = struct {
 
     /// Zooming scales the radius, bringing the position closer to the target
     pub fn zoom(self: *Camera, delta: f32) void {
-        self.rotation.radius += delta * 1000;
+        self.rotation.radius += delta * 9000;
         
         // Prevent radius from becoming negative or zero
         if (self.rotation.radius < 0.1) self.rotation.radius = 0.1;
