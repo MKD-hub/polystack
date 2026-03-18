@@ -1,5 +1,34 @@
 import { type Ref, ref } from "vue";
 
+const boundContextMenu = (
+  canvasRef: Ref<HTMLCanvasElement | undefined>,
+  x: number,
+  y: number
+): { x: number; y: number } | undefined => {
+  if (!canvasRef.value) {
+    return;
+  }
+  const bounds = canvasRef.value.getBoundingClientRect();
+  if (!bounds) {
+    return { x, y };
+  }
+
+  if (x + 300 >= bounds.right) {
+    x = bounds.right - 300;
+  }
+  if (x <= bounds.left) {
+    x = bounds.left;
+  }
+  if (y <= bounds.top) {
+    y = bounds.top;
+  }
+  if (y + 300 >= bounds.bottom) {
+    y = bounds.bottom - 300;
+  }
+
+  return { x, y };
+};
+
 /**
  * @param canvasRef {HTMLCanvasElement}
  * @param getCanvasPos a function for getting the canvas position
