@@ -56,21 +56,18 @@
         </div>
       </div>
     </div>
-    <div class="flex-1">
+    <div class="flex w-full justify-between">
       <a class="btn text-blue-500 border-none btn-ghost text-xl">PolyStack</a>
-    </div>
+      <div class="flex gap-2">
+        <button class="btn btn-ghost">
+          <Undo2 />
+        </button>
+        <button class="btn btn-ghost">
+          <Redo2 />
+        </button>
 
-    <div class="flex gap-2">
-      <button class="btn btn-ghost">
-        <Undo2 />
-      </button>
-      <button class="btn btn-ghost">
-        <Redo2 />
-      </button>
-
-      <button class="btn bg-primary-content text-base-100 btn-wide">
-        render
-      </button>
+        <button class="btn bg-primary-content text-base-100">Render</button>
+      </div>
     </div>
   </div>
 </template>
