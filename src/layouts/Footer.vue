@@ -4,20 +4,15 @@
 </script>
 
 <template>
-  <footer
-    class="footer font-mono z-20 fixed bottom-0 sm:footer-horizontal bg-base-100 text-neutral-900 items-center p-4"
-  >
-    <aside class="grid-flow-col items-center">
-      <div class="flex items-center gap-2 text-neutral-500">
-        <p class="uppercase">Shortcuts</p>
-        <kbd class="kbd kbd-sm bg-blue-200">Shift + F</kbd>
-      </div>
-    </aside>
-    <nav
-      class="text-black grid-flow-col gap-4 md:place-self-center md:justify-self-end"
-    >
-      <p>FPS: 60.0</p>
-      <p class="text-blue-400">v{{ pkg.version }}</p>
-    </nav>
+  <footer class="flex items-center justify-between border-t border-slate-200 bg-[#f8fbff] px-5 py-1.5 text-xs text-slate-500">
+    <div class="flex items-center gap-5">
+      <span class="font-semibold text-blue-700">ENGINE READY</span>
+      <span>60 FPS</span>
+      <span>v{{ pkg.version }}</span>
+    </div>
+    <div class="flex items-center gap-5">
+      <span>DOCS</span>
+      <span>FEEDBACK</span>
+    </div>
   </footer>
 </template>

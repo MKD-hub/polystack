@@ -4,20 +4,27 @@
 <template>
   <div
     aria-label="editor tools"
-    class="absolute top-[8%] z-20 left-[45%] bg-base-100 flex items-center gap-3 text-neutral-400 p-2 rounded-lg"
+    class="absolute left-5 top-20 z-10 grid gap-2.5 rounded-xl border border-slate-200 bg-white p-2 shadow-[0_8px_18px_rgba(148,163,184,0.25)]"
   >
-    <button class="btn btn-square">
-      <MousePointer2 class="hover:text-primary-content" />
+    <button
+      class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-700"
+    >
+      <MousePointer2 />
     </button>
-    <button class="btn btn-square">
-      <Move class="hover:text-primary-content" />
+    <button
+      class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 hover:bg-blue-50 hover:text-blue-700"
+    >
+      <Move />
     </button>
-    <button class="btn btn-square">
-      <Hand class="hover:text-primary-content" />
+    <button
+      class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 hover:bg-blue-50 hover:text-blue-700"
+    >
+      <Hand />
     </button>
-    |
-    <button class="btn btn-square">
-      <Brush class="hover:text-primary-content" />
+    <button
+      class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 hover:bg-blue-50 hover:text-blue-700"
+    >
+      <Brush />
     </button>
   </div>
 </template>
