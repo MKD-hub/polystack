@@ -1,5 +1,8 @@
 # PolyStack
 
+<img width="1865" height="987" alt="image" src="https://github.com/user-attachments/assets/6a4c1d39-9d41-43f8-b49b-ed3663190d39" />
+
+
 *Stack:*
 ### Vue + WASM + ZIG + WebGL + Typescript
 
