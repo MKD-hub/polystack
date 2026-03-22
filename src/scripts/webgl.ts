@@ -1,5 +1,10 @@
-export function clear(gl: WebGLRenderingContext) {
-  gl.clearColor(0.1, 0.1, 0.1, 1.0); // clear to a color close to brown
+import { type Prefs } from "./prefs";
+
+export function clear(
+  gridColor: Prefs["gridColor"],
+  gl: WebGLRenderingContext
+) {
+  gl.clearColor(gridColor.r, gridColor.g, gridColor.b, gridColor.a); // clear to a color close to brown
   gl.clearDepth(1.0); // Clear everything
   gl.enable(gl.DEPTH_TEST); // Enable depth testing
   gl.depthFunc(gl.LEQUAL); // Near things obscure far things

@@ -10,6 +10,7 @@ export interface Prefs {
   fov: number;
   near: number;
   far: number;
+  gridColor: { r: number; g: number; b: number; a: number };
 }
 
 const defaultPrefs: Prefs = {
@@ -24,6 +25,7 @@ const defaultPrefs: Prefs = {
   fov: 45,
   near: 0.001,
   far: 4000.0,
+  gridColor: { r: 0.624, g: 0.651, b: 0.678, a: 1 },
 };
 
 export function loadPrefs(): Prefs {

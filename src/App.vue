@@ -67,7 +67,7 @@
     void setupUniforms(gl, shaderProgram, prefs);
 
     const render = () => {
-      void clear(gl);
+      void clear(prefs.gridColor, gl);
       void wasmStore.exports.updateCamera();
       g_view_mat = wasmStore.exports.returnViewMatrix();
       g_perspective_mat = wasmStore.exports.returnPerspectiveMatrix();
@@ -131,7 +131,9 @@
       <aside class="border-r border-slate-200 bg-[#f3f6fb] p-4">
         <div class="mb-4 flex items-center justify-between">
           <div>
-            <p class="text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <p
+              class="text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-slate-500"
+            >
               Project
             </p>
             <p class="text-sm font-semibold text-slate-800">Hierarchy</p>
@@ -156,7 +158,9 @@
         </ul>
       </aside>
 
-      <main class="relative overflow-hidden border-x border-slate-200 bg-[#f8fbff]">
+      <main
+        class="relative overflow-hidden border-x border-slate-200 bg-[#f8fbff]"
+      >
         <Tools />
         <div class="relative h-full w-full">
           <canvas
@@ -171,36 +175,52 @@
 
       <aside class="border-l border-slate-200 bg-white p-4">
         <div class="mb-4 flex items-center gap-4">
-          <button class="border-b-2 border-blue-700 pb-1 text-sm font-medium text-blue-700">
+          <button
+            class="border-b-2 border-blue-700 pb-1 text-sm font-medium text-blue-700"
+          >
             Properties
           </button>
-          <button class="border-b-2 border-transparent pb-1 text-sm font-medium text-slate-500">
+          <button
+            class="border-b-2 border-transparent pb-1 text-sm font-medium text-slate-500"
+          >
             Materials
           </button>
           <span class="ml-auto text-xs text-slate-400">Cube_01</span>
         </div>
         <div class="mb-4 rounded-xl border border-slate-200 bg-[#eef2f7] p-4">
-          <p class="text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-slate-500">
+          <p
+            class="text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-slate-500"
+          >
             Transform
           </p>
           <div class="mt-3">
-            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-slate-500">
+            <span
+              class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-slate-500"
+            >
               Position
             </span>
             <div class="mt-2 grid grid-cols-3 gap-2">
-              <div class="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-800">
+              <div
+                class="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-800"
+              >
                 X 0.00
               </div>
-              <div class="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-800">
+              <div
+                class="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-800"
+              >
                 Y 1.25
               </div>
-              <div class="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-800">
+              <div
+                class="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-800"
+              >
                 Z 0.00
               </div>
             </div>
           </div>
           <div class="mt-3">
-            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-slate-500">
+            <span
+              class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-slate-500"
+            >
               Rotation Y
             </span>
             <div
@@ -208,7 +228,9 @@
             ></div>
           </div>
           <div class="mt-3">
-            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-slate-500">
+            <span
+              class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-slate-500"
+            >
               Scale Uniform
             </span>
             <div
@@ -217,10 +239,14 @@
           </div>
         </div>
         <div class="mb-4 rounded-xl border border-slate-200 bg-[#eef2f7] p-4">
-          <p class="text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-slate-500">
+          <p
+            class="text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-slate-500"
+          >
             Material
           </p>
-          <div class="mb-3 mt-2 flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white p-2.5">
+          <div
+            class="mb-3 mt-2 flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white p-2.5"
+          >
             <div class="h-8 w-8 rounded-md bg-blue-600"></div>
             <div>
               <p class="text-sm font-semibold text-slate-800">
