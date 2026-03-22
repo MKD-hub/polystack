@@ -3,7 +3,8 @@ export interface Prefs {
   canvasHeight: number;
   aspect: number;
   gridSize: number;
-  gridLineThickness: number;
+  minorGridLineThickness: number;
+  majorGridLineThickness: number;
   gridSpacingMajor: number;
   gridSpacingMinor: number;
   sensitivity: number;
@@ -18,8 +19,9 @@ const defaultPrefs: Prefs = {
   canvasHeight: document.documentElement.clientHeight,
   aspect: 16 / 9,
   gridSize: 2000,
-  gridLineThickness: 0.04,
-  gridSpacingMajor: 4.0,
+  minorGridLineThickness: 0.003,
+  majorGridLineThickness: 0.009,
+  gridSpacingMajor: 5.0,
   gridSpacingMinor: 1.0,
   sensitivity: 0.001,
   fov: 45,

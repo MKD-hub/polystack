@@ -18,6 +18,12 @@ export function initCanvas(canvas: HTMLCanvasElement | null) {
   if (!gl) {
     throw new Error("WebGL 1 not supported!");
   }
+
+  const ext = gl.getExtension("OES_standard_derivatives");
+  if (!ext) {
+    console.warn("OES_standard_derivatives not supported.");
+  }
+
   return gl;
 }
 

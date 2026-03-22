@@ -6,14 +6,30 @@ export const setupUniforms = (
   prefs: Prefs
 ): void => {
   const uniforms = {
-    uLineThicknessLoc: gl.getUniformLocation(program, "u_lineThickness"),
+    uMinorLineThicknessLoc: gl.getUniformLocation(
+      program,
+      "u_minorLineThickness"
+    ),
+    uMajorLineThicknessLoc: gl.getUniformLocation(
+      program,
+      "u_majorLineThickness"
+    ),
     uGridSpacingMajorLoc: gl.getUniformLocation(program, "u_gridSpacingMajor"),
     uGridSpacingMinorLoc: gl.getUniformLocation(program, "u_gridSpacingMinor"),
+    uBgColorLoc: gl.getUniformLocation(program, "u_bgColor"),
   };
 
-  gl.uniform1f(uniforms.uLineThicknessLoc, prefs.gridLineThickness);
+  gl.uniform1f(uniforms.uMinorLineThicknessLoc, prefs.minorGridLineThickness);
+  gl.uniform1f(uniforms.uMajorLineThicknessLoc, prefs.majorGridLineThickness);
   gl.uniform1f(uniforms.uGridSpacingMajorLoc, prefs.gridSpacingMajor);
   gl.uniform1f(uniforms.uGridSpacingMinorLoc, prefs.gridSpacingMinor);
+  gl.uniform4f(
+    uniforms.uBgColorLoc,
+    prefs.gridColor.r,
+    prefs.gridColor.g,
+    prefs.gridColor.b,
+    prefs.gridColor.a
+  );
 
   // Loop through the uniform locations
   for (const [key, location] of Object.entries(uniforms)) {
@@ -57,7 +73,7 @@ export const initShaderProgram = (
   const fragShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
 
   if (!vertexShader || !fragShader) {
-    throw new Error("Unable to create Shader!");
+    throw new Error("Unable to create Shader(s)!");
   }
 
   const shaderProgram = gl.createProgram();
