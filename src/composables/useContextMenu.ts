@@ -1,6 +1,6 @@
 import { type Ref, ref } from "vue";
 
-const boundContextMenu = (
+export const boundedContextMenu = (
   canvasRef: Ref<HTMLCanvasElement | undefined>,
   x: number,
   y: number
@@ -33,7 +33,7 @@ const boundContextMenu = (
  * @param canvasRef {HTMLCanvasElement}
  * @param getCanvasPos a function for getting the canvas position
  */
-const useContextMenu = (canvasRef: Ref<HTMLCanvasElement | undefined>) => {
+export const useContextMenu = () => {
   const open = ref(false);
   const x = ref(0);
   const y = ref(0);
