@@ -14,6 +14,7 @@
   import { drawGridQuad } from "@/core/draw-grid-quad";
   import MouseController from "@/controllers/mouse.controller.ts";
   import { useContextMenu } from "@/composables/useContextMenu.ts";
+  import ContextMenu from "@/components/context-menu.vue";
 
   import vsSource from "@/gl/grid.vertex.glsl?raw";
   import fsSource from "@/gl/grid.frag.glsl?raw";
@@ -26,11 +27,11 @@
 
   // @ts-expect-error: prefs is used in the template code below
   const prefs = loadPrefs();
+  const mc = ref<MouseController | null>(null);
 
   onMounted(async () => {
     void (await loadWasm());
-    const mc = new MouseController(canvas.value!);
-    const cm = useContextMenu();
+    mc.value = new MouseController(canvas.value!);
 
     // Load editor config
     void wasmStore.exports.getEditorConfig(
@@ -122,8 +123,9 @@
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f6f9fc] text-[color:var(--color-base-content)]">
+  <div class="min-h-screen bg-[#f6f9fc] text-(--color-base-content)">
     <TopBar />
+    <ContextMenu :mouse_controller="mc" />
 
     <div
       class="grid min-h-[calc(100vh-120px)] grid-cols-[260px_minmax(0,1fr)_300px]"
@@ -195,7 +197,7 @@
           </p>
           <div class="mt-3">
             <span
-              class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-slate-500"
+              class="text-[0.7rem] font-semibold uppercase tracking-widest text-slate-500"
             >
               Position
             </span>
@@ -219,7 +221,7 @@
           </div>
           <div class="mt-3">
             <span
-              class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-slate-500"
+              class="text-[0.7rem] font-semibold uppercase tracking-widest text-slate-500"
             >
               Rotation Y
             </span>

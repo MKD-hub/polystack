@@ -1,14 +1,32 @@
 import { wasmStore } from "@/scripts/wasm-store";
+import useContextMenu from "@/composables/useContextMenu";
 
 export default class MouseController {
   private isDragging = false;
   private lastX = 0;
   private lastY = 0;
   private canvas: HTMLCanvasElement;
+  private cm: ReturnType<typeof useContextMenu>;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.setupListeners();
+    this.cm = useContextMenu();
+  }
+
+  public handleContextMenuClick(e: MouseEvent) {
+    e.preventDefault();
+    this.cm.openAt(e);
+  }
+
+  public getContextMenu() {
+    return {
+      open: this.cm.open,
+      x: this.cm.x,
+      y: this.cm.y,
+      openAt: this.cm.openAt,
+      close: this.cm.close,
+    };
   }
 
   private setupListeners() {
@@ -16,6 +34,12 @@ export default class MouseController {
       this.isDragging = true;
       this.lastX = e.clientX;
       this.lastY = e.clientY;
+      this.cm.close();
+    });
+
+    this.canvas.addEventListener("contextmenu", (e: MouseEvent) => {
+      e.preventDefault();
+      this.handleContextMenuClick(e);
     });
 
     window.addEventListener("mouseup", () => {
