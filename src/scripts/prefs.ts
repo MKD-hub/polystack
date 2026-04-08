@@ -30,7 +30,7 @@ const defaultPrefs: Prefs = {
   gridColor: { r: 0.624, g: 0.651, b: 0.678, a: 1 },
 };
 
-export function loadPrefs(): Prefs {
+export function loadPrefs(parentContainer?: HTMLElement): Prefs {
   const stored = localStorage.getItem("modellerPrefs");
   if (stored) {
     try {
@@ -39,6 +39,22 @@ export function loadPrefs(): Prefs {
       return defaultPrefs;
     }
   }
+
+  if (parentContainer) {
+    const rect: DOMRect = parentContainer.getBoundingClientRect();
+    const w = Math.floor(rect.width);
+    const h = Math.floor(rect.height);
+    const a = w / h;
+
+    console.log(w, h, a);
+    return {
+      ...defaultPrefs,
+      canvasWidth: w,
+      canvasHeight: h,
+      aspect: a,
+    };
+  }
+
   return defaultPrefs;
 }
 

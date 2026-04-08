@@ -24,6 +24,7 @@ export function initCanvas(canvas: HTMLCanvasElement | null) {
     console.warn("OES_standard_derivatives not supported.");
   }
 
+  gl.viewport(0, 0, canvas?.width ?? 0, canvas?.height ?? 0);
   return gl;
 }
 
