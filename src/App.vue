@@ -3,7 +3,7 @@
 
   import { onMounted, onUnmounted, ref } from "vue";
   import { initCanvas, clear } from "@/scripts/webgl";
-  import { loadPrefs } from "@/scripts/prefs";
+  import { loadPrefs, type Prefs } from "@/scripts/prefs";
   import { initShaderProgram, setupUniforms } from "@/gl";
   import TopBar from "@/layouts/TopBar.vue";
   import Footer from "@/layouts/Footer.vue";
@@ -23,15 +23,20 @@
   let g_perspective_mat: number;
 
   const canvas = ref<HTMLCanvasElement | null>(null);
+  const mainElement = ref<HTMLElement | null>(null);
   let animationId: number;
+  let prefs = ref<Prefs>;
 
   // @ts-expect-error: prefs is used in the template code below
-  const prefs = loadPrefs();
   const mc = ref<MouseController | null>(null);
 
   onMounted(async () => {
     void (await loadWasm());
+    prefs = loadPrefs(mainElement.value!);
     mc.value = new MouseController(canvas.value!);
+
+    canvas.value.width = prefs.canvasWidth;
+    canvas.value.height = prefs.canvasHeight;
 
     // Load editor config
     void wasmStore.exports.getEditorConfig(
@@ -161,21 +166,14 @@
       </aside>
 
       <main
+        ref="mainElement"
         class="relative overflow-hidden border-x border-slate-200 bg-[#f8fbff]"
       >
         <Tools />
-        <div class="relative h-full w-full">
-          <canvas
-            ref="canvas"
-            class="absolute inset-0"
-            title="3D Renderer"
-            :width="prefs.canvasWidth"
-            :height="prefs.canvasHeight"
-          />
-        </div>
+        <canvas ref="canvas" class="absolute inset-0" title="3D Renderer" />
       </main>
 
-      <aside class="border-l border-slate-200 bg-white p-4">
+      <aside class="block border-l border-slate-200 bg-white p-4">
         <div class="mb-4 flex items-center gap-4">
           <button
             class="border-b-2 border-blue-700 pb-1 text-sm font-medium text-blue-700"
@@ -231,7 +229,7 @@
           </div>
           <div class="mt-3">
             <span
-              class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-slate-500"
+              class="text-[0.7rem] font-semibold uppercase tracking-widest text-slate-500"
             >
               Scale Uniform
             </span>
