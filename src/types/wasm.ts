@@ -20,6 +20,7 @@ export interface WasmExports {
   cameraRotate(theta: number, phi: number): void;
   getCameraPos(): Float32Array;
   zoom(zoom: number): void;
+  pan(delta_x: number, delta_y: number): void;
   getGridVerts(): Float32Array;
   getGridTriangles(): Uint16Array;
   generateAndReturnGridQuad(size: number): Float32Array;

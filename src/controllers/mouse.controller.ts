@@ -34,16 +34,17 @@ export default class MouseController {
       this.isDragging = true;
       this.lastX = e.clientX;
       this.lastY = e.clientY;
+      // close context menu
       this.cm.close();
+    });
+
+    window.addEventListener("mouseup", () => {
+      this.isDragging = false;
     });
 
     this.canvas.addEventListener("contextmenu", (e: MouseEvent) => {
       e.preventDefault();
       this.handleContextMenuClick(e);
-    });
-
-    window.addEventListener("mouseup", () => {
-      this.isDragging = false;
     });
 
     this.canvas.addEventListener("mousemove", (e) => {
@@ -53,10 +54,20 @@ export default class MouseController {
       const deltaY = e.clientY - this.lastY;
 
       if (wasmStore.exports) {
+        if (e.shiftKey) {
+          wasmStore.exports.pan(-deltaX, deltaY);
+          return;
+        }
+      } else {
+        return;
+      }
+
+      if (wasmStore.exports) {
         wasmStore.exports.cameraRotate(deltaX, deltaY);
       } else {
         return;
       }
+
       this.lastX = e.clientX;
       this.lastY = e.clientY;
     });
@@ -65,7 +76,6 @@ export default class MouseController {
       "wheel",
       (e) => {
         e.preventDefault();
-        console.log("deltaY", 1 / e.deltaY);
         if (wasmStore.exports) {
           wasmStore.exports.zoom(1 / e.deltaY);
         } else {

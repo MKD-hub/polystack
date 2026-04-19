@@ -16,7 +16,7 @@ const CameraState = struct {
 
 const CameraRotation = struct {
     radius: f32,
-    phi: f32,   // Vertical angle (Polar)
+    phi: f32, // Vertical angle (Polar)
     theta: f32, // Horizontal angle (Azimuthal)
 
     const default: CameraRotation = .{
@@ -58,10 +58,10 @@ pub const Camera = struct {
     pub fn updateOrientation(self: *Camera) void {
         // Forward is the vector from Position to Target
         const fwd = self.state.position.subtract(self.state.target).normalize() catch Vec3.init(0, 0, 1);
-        
+
         // Right is perpendicular to World Up and Forward
         const right = constants.world_up.cross(fwd).normalize() catch Vec3.init(1, 0, 0);
-        
+
         // Up is perpendicular to Forward and Right
         const up = fwd.cross(right).normalize() catch Vec3.init(0, 1, 0);
 
@@ -111,7 +111,7 @@ pub const Camera = struct {
     /// Zooming scales the radius, bringing the position closer to the target
     pub fn zoom(self: *Camera, delta: f32) void {
         self.rotation.radius += delta * 9000;
-        
+
         // Prevent radius from becoming negative or zero
         if (self.rotation.radius < 0.1) self.rotation.radius = 0.1;
 

@@ -12,6 +12,7 @@ pub const std_options: std.Options = .{ .log_level = .info, .logFn = wasmLog };
 
 pub fn wasmLog(comptime level: std.log.Level, comptime scope: @Type(.enum_literal), comptime format: []const u8, args: anytype) void {
     const scope_prefix = "(" ++ switch (scope) {
+        // TODO: add proper enum
         .camera, .math, .editor_config, std.log.default_log_scope => @tagName(scope),
         else => if (@intFromEnum(level) <= @intFromEnum(std.log.Level.err))
             @tagName(scope)
@@ -29,7 +30,6 @@ pub fn wasmLog(comptime level: std.log.Level, comptime scope: @Type(.enum_litera
     logString(formatted_string);
 }
 
-
 var gpa = heap.GeneralPurposeAllocator(.{}){};
 const allocator = gpa.allocator(); // Not sure if this is idiomatic, but global allocator over here. Just one. Used everywhere.
 var g_context: context.CoreContext = context.CoreContext.init(allocator);
@@ -37,21 +37,13 @@ var g_context: context.CoreContext = context.CoreContext.init(allocator);
 pub const editor_config_log = std.log.scoped(.editor_config);
 pub const camera_log = std.log.scoped(.camera);
 
-export fn getEditorConfig(
-    fov:           f32,
-    aspect:        f32,
-    near:          f32,
-    far:           f32,
-    sensitivity:   f32,
-    canvas_width:  f32,
-    canvas_height: f32
-) void {
-    g_context.config.fov           = fov * (std.math.pi / 180.0);
-    g_context.config.aspect        = aspect;
-    g_context.config.near          = near;
-    g_context.config.far           = far;
-    g_context.config.sensitivity   = sensitivity;
-    g_context.config.canvas_width  = canvas_width;
+export fn getEditorConfig(fov: f32, aspect: f32, near: f32, far: f32, sensitivity: f32, canvas_width: f32, canvas_height: f32) void {
+    g_context.config.fov = fov * (std.math.pi / 180.0);
+    g_context.config.aspect = aspect;
+    g_context.config.near = near;
+    g_context.config.far = far;
+    g_context.config.sensitivity = sensitivity;
+    g_context.config.canvas_width = canvas_width;
     g_context.config.canvas_height = canvas_height;
 
     // zig fmt: off
@@ -140,6 +132,15 @@ export fn zoom(js_delta_y: f32) void {
     const zoom_sensitivity: f32 = 0.05;
     const delta_radius = js_delta_y * zoom_sensitivity; 
     g_context.camera.zoom(delta_radius);
+}
+
+export fn pan(js_delta_x: f32, js_delta_y: f32) void {
+    const world = utils.convertPixelToWorldCoordinates(g_context.camera, g_context.config);
+    const dx = js_delta_x * world.x * g_context.config.sensitivity;
+    const dy = js_delta_y * world.y * g_context.config.sensitivity;
+    const sdx = std.math.lerp(0.0, dx, 90);
+    const sdy = std.math.lerp(0.0, dy, 90);
+    g_context.camera.pan(sdx, sdy);
 }
 
 export fn returnPerspectiveMatrix() *[16]f32 {
