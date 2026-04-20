@@ -1,4 +1,5 @@
 const std = @import("std");
+const logger = @import("../utils/logger.zig");
 const math = std.math;
 
 pub const Vec3 = struct {
@@ -17,7 +18,8 @@ pub const Vec3 = struct {
     pub fn normalize(self: Vec3) !Vec3 {
         const mag = self.magnitude();
         if (mag == 0) {
-            @panic("Divide By Zero!");
+            logger.log_Cam.err("Divide By Zero", .{});
+            return error.DivisionByZero;
         }
         return .{ .x = self.x/mag, .y = self.y/mag, .z = self.z/mag };
     }
@@ -46,6 +48,7 @@ pub const Vec3 = struct {
         return .{ .x = self.x - other.x, .y = self.y - other.y, .z = self.z - other.z };
     }
 
+    /// add components of two vectors
     pub fn add(self: Vec3, other: Vec3) Vec3 {
         return .{ .x = self.x + other.x, .y = self.y + other.y, .z = self.z + other.z };
     }
