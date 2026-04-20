@@ -19,6 +19,14 @@ pub fn flattenMat4ToF32Array(mat: Mat4, out: *[16]f32) void {
     }
 }
 
+// KEEP just in case:
+// pub fn flattenVec3ToF32Array(vec: Vec3, out: *[3]f32) void {
+//     std.debug.assert(out.len >= 3);
+//     out[0] = vec.x;
+//     out[1] = vec.y;
+//     out[2] = vec.z;
+// }
+
 pub fn f32ArrayToVec4(arr: *[4]f32) Vec4 {
     std.debug.assert(arr.len >= 4);
 

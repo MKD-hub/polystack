@@ -20,7 +20,8 @@ pub fn build(b: *std.Build) void {
         "returnPerspectiveMatrix",
         "cameraRotate",
         "zoom",
-        "pan"
+        "pan",
+        "resetPan"
     };
 
     const exe = b.addExecutable(.{
