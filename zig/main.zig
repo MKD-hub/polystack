@@ -6,36 +6,17 @@ const utils = @import("./utils/utils.zig");
 const grid = @import("./core/grid.zig");
 const constants = @import("./constants.zig");
 const context = @import("./context.zig");
+const logger = @import("./utils/logger.zig");
 
 pub extern fn logString(string: [*c]const u8) void; // Take C-style string and print on the JS side.
-pub const std_options: std.Options = .{ .log_level = .info, .logFn = wasmLog };
-
-pub fn wasmLog(comptime level: std.log.Level, comptime scope: @Type(.enum_literal), comptime format: []const u8, args: anytype) void {
-    const scope_prefix = "(" ++ switch (scope) {
-        // TODO: add proper enum
-        .camera, .math, .editor_config, std.log.default_log_scope => @tagName(scope),
-        else => if (@intFromEnum(level) <= @intFromEnum(std.log.Level.err))
-            @tagName(scope)
-        else
-            return,
-    } ++ "): ";
-
-    const prefix = "[" ++ comptime level.asText() ++ "] " ++ scope_prefix;
-
-    var buf: [256]u8 = undefined;
-    const formatted_string = std.fmt.bufPrintZ(&buf, prefix ++ format, args) catch |err| {
-        logString("Log Broken");
-        @panic(@errorName(err));
-    };
-    logString(formatted_string);
-}
+pub const std_options: std.Options = .{ .log_level = .info, .logFn = logger.wasmLog };
 
 var gpa = heap.GeneralPurposeAllocator(.{}){};
 const allocator = gpa.allocator(); // Not sure if this is idiomatic, but global allocator over here. Just one. Used everywhere.
 var g_context: context.CoreContext = context.CoreContext.init(allocator);
 
-pub const editor_config_log = std.log.scoped(.editor_config);
-pub const camera_log = std.log.scoped(.camera);
+pub const editor_config_log = logger.log_editor;
+pub const camera_log = logger.log_Cam;
 
 export fn getEditorConfig(fov: f32, aspect: f32, near: f32, far: f32, sensitivity: f32, canvas_width: f32, canvas_height: f32) void {
     g_context.config.fov = fov * (std.math.pi / 180.0);
@@ -118,7 +99,6 @@ export fn returnViewMatrix() *[16]f32 {
 }
 
 export fn cameraRotate(theta: i32, phi: i32) void {
-    camera_log.info("theta = {d:.4}, phi = {d:.4}\n", .{theta, phi});
     const r_theta = @as(f32, @floatFromInt(theta))   * g_context.config.sensitivity;
     const r_phi   = @as(f32, @floatFromInt(phi))     * g_context.config.sensitivity;
     g_context.camera.updateSpherical(r_theta, r_phi);
@@ -141,6 +121,11 @@ export fn pan(js_delta_x: f32, js_delta_y: f32) void {
     const sdx = std.math.lerp(0.0, dx, 90);
     const sdy = std.math.lerp(0.0, dy, 90);
     g_context.camera.pan(sdx, sdy);
+}
+
+export fn resetPan() void {
+    g_context.camera.resetPan();
+    camera_log.info("pos = .{}, target = .{}\n", .{g_context.camera.state.position, g_context.camera.state.target});
 }
 
 export fn returnPerspectiveMatrix() *[16]f32 {

@@ -24,4 +24,5 @@ export interface WasmExports {
   getGridVerts(): Float32Array;
   getGridTriangles(): Uint16Array;
   generateAndReturnGridQuad(size: number): Float32Array;
+  resetPan(): void;
 }

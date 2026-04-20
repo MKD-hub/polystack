@@ -1,8 +1,10 @@
-/// Camera
+/// Camera Module
+/// Logic for zooming, panning, reseting panning and rotation.
 const std = @import("std");
 const Vec3 = @import("../math/vec3.zig").Vec3;
 const Mat4 = @import("../math/mat4.zig").Mat4;
 const constants = @import("../constants.zig");
+const logger = @import("../utils/logger.zig");
 
 const CameraState = struct {
     position: Vec3,
@@ -94,7 +96,7 @@ pub const Camera = struct {
             self.state.target.z + z,
         );
 
-        self.updateOrientation();
+        // self.updateOrientation();
     }
 
     /// Panning moves the Target and Position together along the camera's local axes
@@ -106,6 +108,18 @@ pub const Camera = struct {
 
         self.state.target = self.state.target.add(total_offset);
         self.state.position = self.state.position.add(total_offset);
+    }
+
+    /// Reset pan
+    pub fn resetPan(self: *Camera) void {
+        // get distance to origin
+
+        self.state = CameraState.default;
+        self.derived = CameraDerived.default;
+        self.rotation = CameraRotation.default;
+        // Initialize position based on default rotation
+        self.updateSpherical(0, 0);
+        self.updateOrientation();
     }
 
     /// Zooming scales the radius, bringing the position closer to the target

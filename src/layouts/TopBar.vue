@@ -6,7 +6,10 @@
     Image,
     Shapes,
     Layers,
+    Focus,
   } from "lucide-vue-next";
+
+  import { panReset } from "@/layouts/TopBarFunctions";
 </script>
 
 <template>
@@ -34,6 +37,14 @@
       </nav>
     </div>
     <div class="flex items-center gap-2">
+      <span class="tooltip tooltip-bottom" data-tip="focus camera on origin">
+        <button
+          class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-slate-500 hover:border-slate-200 hover:bg-[#eff4ff]"
+          @click="panReset"
+        >
+          <Focus />
+        </button>
+      </span>
       <span class="tooltip tooltip-bottom" data-tip="undo">
         <button
           class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-slate-500 hover:border-slate-200 hover:bg-[#eff4ff]"
