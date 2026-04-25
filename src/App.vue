@@ -15,6 +15,7 @@
   import MouseController from "@/controllers/mouse.controller.ts";
   import { useContextMenu } from "@/composables/useContextMenu.ts";
   import ContextMenu from "@/components/context-menu.vue";
+  import drawGizmo from "@/core/draw-gizmo.ts";
 
   import vsSource from "@/gl/grid.vertex.glsl?raw";
   import fsSource from "@/gl/grid.frag.glsl?raw";
@@ -115,6 +116,8 @@
         view_mat,
         proj_mat
       );
+
+      drawGizmo(gl);
       animationId = requestAnimationFrame(render);
     };
 
