@@ -15,8 +15,8 @@ export interface Prefs {
 }
 
 const defaultPrefs: Prefs = {
-  canvasWidth: document.documentElement.clientWidth,
-  canvasHeight: document.documentElement.clientHeight,
+  canvasWidth: document.documentElement.clientWidth * window.devicePixelRatio,
+  canvasHeight: document.documentElement.clientHeight * window.devicePixelRatio,
   aspect: 16 / 9,
   gridSize: 2000,
   minorGridLineThickness: 0.003,
