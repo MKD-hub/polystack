@@ -21,7 +21,9 @@ pub fn build(b: *std.Build) void {
         "cameraRotate",
         "zoom",
         "pan",
-        "resetPan"
+        "resetPan",
+        "returnGizmoVerts",
+        "returnGizmoTris"
     };
 
     const exe = b.addExecutable(.{
