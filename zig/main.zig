@@ -7,6 +7,8 @@ const grid = @import("./core/grid.zig");
 const constants = @import("./constants.zig");
 const context = @import("./context.zig");
 const logger = @import("./utils/logger.zig");
+const gizmo = @import("./3d/ui/gizmo.zig");
+const gizmoMat = @import("./core/orientation_gizmo.zig");
 
 pub extern fn logString(string: [*c]const u8) void; // Take C-style string and print on the JS side.
 pub const std_options: std.Options = .{ .log_level = .info, .logFn = logger.wasmLog };
@@ -140,4 +142,25 @@ export fn returnPerspectiveMatrix() *[16]f32 {
     );
 
     return &g_context.perspective_mat;
+}
+
+export fn returnGizmoVerts() *const [24][4]f32 {
+    return gizmo.getVerts();
+}
+
+
+export fn returnGizmoTris() *const [12][3]u16 {
+    return gizmo.getTris();
+}
+
+export fn returnGizmoColors() *const [24][3]f32 {
+    return gizmo.getColors();
+}
+
+export fn returnGizmoViewMatrix() *[16]f32 {
+    return gizmoMat.makeGizmoViewMat(&g_context);
+}
+
+export fn returnGizmoPerspectiveMatrix() *[16]f32 {
+    return gizmoMat.makeGizmoPerspectiveMat(&g_context);
 }

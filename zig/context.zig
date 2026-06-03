@@ -17,7 +17,7 @@ pub const CoreContext = struct {
     perspective_mat: [16]f32,
     grid_model_mat: [16]f32,
     gizmo_view_mat: [16]f32,
-    gizmo_perspecitve_mat: [16]f32,
+    gizmo_perspective_mat: [16]f32,
 
     pub fn init(alloc: std.mem.Allocator) CoreContext {
         return .{
@@ -28,7 +28,7 @@ pub const CoreContext = struct {
             .perspective_mat = undefined,
             .grid_model_mat = undefined,
             .gizmo_view_mat = undefined,
-            .gizmo_perspecitve_mat = undefined,
+            .gizmo_perspective_mat = undefined,
         };
     }
 };
