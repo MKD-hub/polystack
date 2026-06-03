@@ -23,7 +23,10 @@ pub fn build(b: *std.Build) void {
         "pan",
         "resetPan",
         "returnGizmoVerts",
-        "returnGizmoTris"
+        "returnGizmoTris",
+        "returnGizmoColors",
+        "returnGizmoViewMatrix",
+        "returnGizmoPerspectiveMatrix"
     };
 
     const exe = b.addExecutable(.{

@@ -21,7 +21,7 @@ pub const Vec3 = struct {
             logger.log_Cam.err("Divide By Zero", .{});
             return error.DivisionByZero;
         }
-        return .{ .x = self.x/mag, .y = self.y/mag, .z = self.z/mag };
+        return .{ .x = self.x / mag, .y = self.y / mag, .z = self.z / mag };
     }
 
     pub fn dot(self: Vec3, other: Vec3) f32 {
