@@ -20,6 +20,9 @@
   import vsSource from "@/gl/grid.vertex.glsl?raw";
   import fsSource from "@/gl/grid.frag.glsl?raw";
 
+  import gizmoVsSource from "@/gl/gizmo.vertex.glsl?raw";
+  import gizmoFsSource from "@/gl/gizmo.frag.glsl?raw";
+
   let g_view_mat: number;
   let g_perspective_mat: number;
 
@@ -59,6 +62,7 @@
       Float32Array,
       wasmStore.exports
     );
+
     const t_grid_view = Reader(
       t_grid,
       VEC3_WIDTH * 2,
@@ -68,7 +72,10 @@
 
     const gl = initCanvas(canvas.value);
     const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+    const gizmoProgram = initShaderProgram(gl, gizmoVsSource, gizmoFsSource);
+
     gl.useProgram(shaderProgram);
+
     const grid_buffer = gl.createBuffer();
 
     void setupUniforms(gl, shaderProgram, prefs);
@@ -117,7 +124,7 @@
         proj_mat
       );
 
-      drawGizmo(gl);
+      drawGizmo(gl, gizmoProgram);
       animationId = requestAnimationFrame(render);
     };
 

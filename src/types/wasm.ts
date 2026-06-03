@@ -1,3 +1,5 @@
+type pointer = number;
+
 export interface WasmExports {
   memory: WebAssembly.Memory;
   malloc(size: number): number;
@@ -13,7 +15,7 @@ export interface WasmExports {
     canvas_height: number
   ): void;
 
-  getGridPtr(): number;
+  getGridPtr(): pointer;
   updateCamera(): void;
   returnViewMatrix(): Float32Array;
   returnPerspectiveMatrix(): Float32Array;
@@ -25,4 +27,9 @@ export interface WasmExports {
   getGridTriangles(): Uint16Array;
   generateAndReturnGridQuad(size: number): Float32Array;
   resetPan(): void;
+  returnGizmoViewMatrix(): pointer;
+  returnGizmoPerspectiveMatrix(): pointer;
+  returnGizmoVerts(): pointer;
+  returnGizmoTris(): pointer;
+  returnGizmoColors(): pointer;
 }
