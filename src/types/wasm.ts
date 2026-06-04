@@ -1,9 +1,12 @@
-type pointer = number;
+/**
+ * @definition pointer type added for readability
+ */
+export type pointer = number;
 
 export interface WasmExports {
   memory: WebAssembly.Memory;
-  malloc(size: number): number;
-  free(ptr: number, size: number): void;
+  malloc(size: number): pointer;
+  free(ptr: pointer, size: number): void;
 
   getEditorConfig(
     fov: number,
@@ -17,19 +20,20 @@ export interface WasmExports {
 
   getGridPtr(): pointer;
   updateCamera(): void;
-  returnViewMatrix(): Float32Array;
-  returnPerspectiveMatrix(): Float32Array;
+  returnViewMatrix(): pointer; // to Float32Array
+  returnPerspectiveMatrix(): pointer; // to Float32Array
   cameraRotate(theta: number, phi: number): void;
-  getCameraPos(): Float32Array;
+  getCameraPos(): pointer; // to Float32Array
   zoom(zoom: number): void;
   pan(delta_x: number, delta_y: number): void;
-  getGridVerts(): Float32Array;
-  getGridTriangles(): Uint16Array;
-  generateAndReturnGridQuad(size: number): Float32Array;
+  getGridVerts(): pointer; // to Float32Array
+  getGridTriangles(): pointer; // to Uint16Array
+  generateAndReturnGridQuad(size: number): pointer; // Float32Array
   resetPan(): void;
   returnGizmoViewMatrix(): pointer;
   returnGizmoPerspectiveMatrix(): pointer;
   returnGizmoVerts(): pointer;
   returnGizmoTris(): pointer;
   returnGizmoColors(): pointer;
+  returnGizmoUVs(): pointer;
 }

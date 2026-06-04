@@ -148,13 +148,16 @@ export fn returnGizmoVerts() *const [24][4]f32 {
     return gizmo.getVerts();
 }
 
-
 export fn returnGizmoTris() *const [12][3]u16 {
     return gizmo.getTris();
 }
 
 export fn returnGizmoColors() *const [24][3]f32 {
     return gizmo.getColors();
+}
+
+export fn returnGizmoUVs() *const [24][2]f32 {
+    return gizmo.getUVs(); 
 }
 
 export fn returnGizmoViewMatrix() *[16]f32 {

@@ -16,6 +16,7 @@
   import { useContextMenu } from "@/composables/useContextMenu.ts";
   import ContextMenu from "@/components/context-menu.vue";
   import drawGizmo from "@/core/draw-gizmo.ts";
+  import generateGizmoTexture from "@/core/gizmo-texture.ts";
 
   import vsSource from "@/gl/grid.vertex.glsl?raw";
   import fsSource from "@/gl/grid.frag.glsl?raw";
@@ -80,6 +81,8 @@
 
     void setupUniforms(gl, shaderProgram, prefs);
 
+    const texture: WebGLTexture = generateGizmoTexture(gl);
+
     const render = () => {
       void clear(prefs.gridColor, gl);
       void wasmStore.exports.updateCamera();
@@ -124,7 +127,7 @@
         proj_mat
       );
 
-      drawGizmo(gl, gizmoProgram);
+      drawGizmo(gl, gizmoProgram, texture);
       animationId = requestAnimationFrame(render);
     };
 

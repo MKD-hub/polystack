@@ -26,7 +26,8 @@ pub fn build(b: *std.Build) void {
         "returnGizmoTris",
         "returnGizmoColors",
         "returnGizmoViewMatrix",
-        "returnGizmoPerspectiveMatrix"
+        "returnGizmoPerspectiveMatrix",
+        "returnGizmoUVs"
     };
 
     const exe = b.addExecutable(.{

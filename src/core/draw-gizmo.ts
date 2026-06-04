@@ -7,12 +7,13 @@ const sizeOfVerts = 96;
 // 12 tris * 3 (uint16) bytes/tri
 const sizeOfTris = 36;
 
-// 24 faces * 3 (float32) bytes/face
-const sizeOfColors = 72;
+// 24 verts * 2 (float32) bytes
+const sizeOfUVs = 48;
 
 const drawGizmo = (
   gl: WebGLRenderingContext,
   gizmoProgram: WebGLProgram,
+  texture: WebGLTexture,
   sizeViewPort = 100,
   marginViewPort = 12
 ): void => {
@@ -30,6 +31,7 @@ const drawGizmo = (
   const canvas = gl.canvas as HTMLCanvasElement;
   const canvasW = canvas.width;
   // const canvasH = canvas.height;
+  //
 
   gl.uniformMatrix4fv(
     gl.getUniformLocation(gizmoProgram, "uViewMatrix"),
@@ -46,7 +48,7 @@ const drawGizmo = (
   const y = margin;
 
   const prevViewport: number[] = gl.getParameter(gl.VIEWPORT);
-  const prevClearColor = gl.getParameter(gl.COLOR_CLEAR_VALUE);
+  // const prevClearColor = gl.getParameter(gl.COLOR_CLEAR_VALUE);
 
   gl.enable(gl.SCISSOR_TEST);
   gl.viewport(x, y, size, size);
@@ -57,7 +59,7 @@ const drawGizmo = (
 
   // create buffers
   const triBuf = gl.createBuffer();
-  const colBuf = gl.createBuffer();
+  const texBuf = gl.createBuffer();
 
   // bind Buffers
   const posBuf = gl.createBuffer();
@@ -67,11 +69,17 @@ const drawGizmo = (
   gl.vertexAttribPointer(aPosLoc, 4, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(aPosLoc);
 
-  gl.bindBuffer(gl.ARRAY_BUFFER, colBuf);
-  gl.bufferData(gl.ARRAY_BUFFER, gizmoData.colors, gl.STATIC_DRAW);
-  const aColorLoc = gl.getAttribLocation(gizmoProgram, "aColor");
-  gl.vertexAttribPointer(aColorLoc, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(aColorLoc);
+  // bind texture
+  gl.activeTexture(gl.TEXTURE0);
+
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.uniform1i(gl.getUniformLocation(gizmoProgram, "uSampler"), 0);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, texBuf);
+  gl.bufferData(gl.ARRAY_BUFFER, gizmoData.uvs, gl.STATIC_DRAW);
+  const aTexLoc = gl.getAttribLocation(gizmoProgram, "aTexCoord");
+  gl.vertexAttribPointer(aTexLoc, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(aTexLoc);
 
   // write buffer data
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, triBuf);
@@ -80,11 +88,11 @@ const drawGizmo = (
   gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
 
   gl.disableVertexAttribArray(aPosLoc);
-  gl.disableVertexAttribArray(aColorLoc);
+  gl.disableVertexAttribArray(aTexLoc);
 
   gl.deleteBuffer(posBuf);
   gl.deleteBuffer(triBuf);
-  gl.deleteBuffer(colBuf);
+  gl.deleteBuffer(texBuf);
 
   gl.disable(gl.SCISSOR_TEST);
   gl.viewport(
@@ -107,7 +115,7 @@ const getGizmoParams = ():
       projMat: Float32Array;
       verts: Float32Array;
       tris: Uint16Array;
-      colors: Float32Array;
+      uvs: Float32Array;
     }
   | Error => {
   if (!wasmStore.exports) return new Error("wasmStore exports haven't loaded");
@@ -121,7 +129,7 @@ const getGizmoParams = ():
 
   const gizmo_verts = wasmStore.exports.returnGizmoVerts();
   const gizmo_tris = wasmStore.exports.returnGizmoTris();
-  const gizmo_colors = wasmStore.exports.returnGizmoColors();
+  const gizmo_uvs = wasmStore.exports.returnGizmoUVs();
 
   const gizmo_tris_view = Reader(
     gizmo_tris,
@@ -135,9 +143,9 @@ const getGizmoParams = ():
     Float32Array,
     wasmStore.exports
   );
-  const gizmo_colors_view = Reader(
-    gizmo_colors,
-    sizeOfColors,
+  const gizmo_uvs_view = Reader(
+    gizmo_uvs,
+    sizeOfUVs,
     Float32Array,
     wasmStore.exports
   );
@@ -147,7 +155,7 @@ const getGizmoParams = ():
     projMat: projMat,
     verts: gizmo_verts_view,
     tris: gizmo_tris_view,
-    colors: gizmo_colors_view,
+    uvs: gizmo_uvs_view,
   };
 };
 
