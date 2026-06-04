@@ -2,7 +2,7 @@ import type {
   SliceableTypedArray,
   SliceableTypedArrayConstructor,
 } from "@/types/types";
-import type { WasmExports } from "@/types/wasm";
+import type { WasmExports, pointer } from "@/types/wasm";
 
 /**
  * Writes a TypedArray into Wasm Memory
@@ -16,9 +16,9 @@ import type { WasmExports } from "@/types/wasm";
 export const ArrayWriter = (
   array: Int32Array | Float32Array,
   exports: WasmExports
-): number => {
+): pointer => {
   const sizeInBytes = array.byteLength;
-  const ptr = exports.malloc(sizeInBytes) as number; // Call Zig's malloc to get a pointer
+  const ptr = exports.malloc(sizeInBytes) as pointer; // Call Zig's malloc to get a pointer
 
   if (ptr === 0) {
     throw new Error("WASM malloc failed to allocate memory.");
@@ -49,14 +49,12 @@ export const ArrayWriter = (
  **/
 
 export const Reader = <T extends SliceableTypedArray>(
-  ptr: number,
+  ptr: pointer,
   sizeToRead: number,
   elementType: SliceableTypedArrayConstructor<T>,
   exports: WasmExports
 ): T => {
   const memoryBuffer = exports.memory.buffer;
-
-  // const readView = new elementType(memoryBuffer, ptr, sizeToRead);
 
   return new elementType(memoryBuffer, ptr, sizeToRead) as T;
 };
